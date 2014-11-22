@@ -1,0 +1,42 @@
+##############################################################
+#
+# Xilinx Core Generator version 11.4
+# Date: Mon Aug 20 02:01:14 2012
+#
+##############################################################
+#
+#  This file contains the customisation parameters for a
+#  Xilinx CORE Generator IP GUI. It is strongly recommended
+#  that you do not manually alter this file as it may cause
+#  unexpected and unsupported behavior.
+#
+##############################################################
+#
+# BEGIN Project Options
+SET addpads = False
+SET asysymbol = True
+SET busformat = BusFormatAngleBracketNotRipped
+SET createndf = False
+SET designentry = VHDL
+SET device = xc5vlx50t
+SET devicefamily = virtex5
+SET flowvendor = Other
+SET formalverification = False
+SET foundationsym = False
+SET implementationfiletype = Ngc
+SET package = ff1136
+SET removerpms = False
+SET simulationfiles = Behavioral
+SET speedgrade = -1
+SET verilogsim = False
+SET vhdlsim = True
+# END Project Options
+# BEGIN Select
+SELECT MIG family Xilinx,_Inc. 3.3
+# END Select
+# BEGIN Parameters
+CSET component_name=ddr2_sdram_mig33
+CSET xml_input_file=E:/vhdl_projects/GH5007_video_sample/ipcore/ddr2_sdram_mig33/user_design/mig.prj
+# END Parameters
+GENERATE
+# CRC:  e24cdd8
