@@ -1,0 +1,161 @@
+
+CORE Generator Options:
+   Target Device                  : xc5vlx50t-ff1136
+   Speed Grade                    : -1
+   HDL                            : vhdl
+   Synthesis Tool                 : XST
+
+MIG Output Options:
+   Module Name                    : ddr2_sdram_mig33
+   No of Controllers              : 1
+   Selected Compatible Device(s)  : --
+   Hardware Test Bench           : disabled
+   PPC440                         : --
+   PowerPC440 Block Selection     : --
+
+FPGA Options:
+   PLL                            : enabled
+   Debug Signals                  : Disable
+   System Clock                   : Single-Ended
+   Limit to 2 Bytes per Bank      : disabled
+
+Extended FPGA Options:
+   DCI for DQ/DQS                 : enabled
+   DCI for Address/Control        : enabled
+   Class for Address and Control  : Class II
+
+Reserve Pins:
+          Bank 1: L21, L20, L15, L16, J22, K21, K16, J15, G22, L14, K14, K23, K22, J12, H12, G23, H23, K13, K12
+       Bank 2: AE13, AE12, AF23, AG23, AF13, AG12, AE22, AE23, AE14, AF20, AF21, AF15, AE16, AE21, AD20, AF16, AE17, AE19, AD19
+       Bank 4: AG22, AH22, AH12, AG13, AH20, AH19, AH14, AH13, AG21, AH15, AG15, AG18, AF19, AH17, AG16, AF18, AE18, AH18, AG17
+       Bank 11: B32, A33, B33, C33, C32, D32, C34, D34, G32, F33, E34, E32, E33, G33, F34, J32, H33, H34, J34, L34, K34, K33, K32, N33, M33, L33, M32, P34, P32, N32, T33, R34, R33, R32, U33, T34, U32, U31
+       Bank 12: M6, M5, N8, N7, M7, L6, N5, P5, L4, P7, P6, K7, K6, R6, T6, J6, J5, R7, R8, T8, U7, H7, J7, R9, P9, H5, G5, R11, F5, F6, T10, T11, G6, G7, T9, U10, E6, E7
+       Bank 13: V32, V33, W34, V34, Y33, AA33, AA34, Y34, Y32, AC34, AD34, AC32, AB32, AC33, AB33, AF33, AE33, AF34, AE34, AH34, AJ34, AD32, AE32, AG33, AH33, AK34, AK33, AG32, AJ32, AK32, AL34, AL33, AM33, AM32, AN34, AN33, AN32, AP32
+       Bank 17: W24, V24, Y26, W26, V25, W25, Y27, W27, V30, V28, V27, W31, Y31, W29, V29, Y28, Y29, AB31, AA31, AB30, AC30, AA29, AA30, AD31, AE31, AD30, AC29, AF31, AE29, AD29, AJ31, AK31, AF29, AF30, AJ30, AH30, AH29, AG30
+       Bank 18: AC4, AC5, AB6, AB7, AA5, AB5, AC7, AD7, Y8, AD4, AD5, AA6, Y7, AD6, AE6, W6, Y6, AE7, AF6, AG5, AF5, W7, V7, AH5, AG6, Y11, W11, AH7, W10, W9, AJ7, AJ6, V8, U8, AK7, AK6, V10, V9
+       Bank 21: AA25, AA26, AB27, AC27, Y24, AA24, AB25, AB26, AC28, AB28, AA28, AG28, AH28, AE28, AF28, AK26, AJ27, AK29, AJ29, AK28, AK27, AH27, AJ26, AJ25, AH25, AF24, AG25, AG27, AF25, AF26, AE27, AE26, AC25, AC24, AD26, AD25, AD24, AE24
+       Bank 22: AN14, AP14, AB10, AA10, AN13, AM13, AA8, AA9, AP12, AC8, AB8, AM12, AM11, AC10, AC9, AL11, AL10, AE8, AD9, AD10, AD11, AK11, AJ11, AF8, AE9, AK8, AK9, AF9, AJ9, AJ10, AF11, AE11, AH9, AH10, AG8, AH8, AG10, AG11
+
+    
+   /*******************************************************/
+   /*                  Controller 0                       */
+   /*******************************************************/
+   Controller Options :
+      Memory                         : DDR2_SDRAM
+      Design Clock Frequency         : 5000 ps(200.00 MHz)
+      Memory Type                    : Components
+      Memory Part                    : MT47H128M16XX-3
+      Equivalent Part(s)             : MT47H128M16HG-3
+      Data Width                     : 32
+      Memory Depth                   : 1
+      ECC                            : ECC Disabled
+      Data Mask                      : enabled
+
+   Memory Options:
+      Burst Length (MR[2:0])         : 4(010)
+      Burst Type (MR[3])             : sequential(0)
+      CAS Latency (MR[6:4])          : 3(011)
+      Output Drive Strength (EMR[1]) : Fullstrength(0)
+      RTT (nominal) - ODT (EMR[6,2]) : 50ohms(11)
+      Additive Latency (EMR[5:3])    : 0(000)
+
+   FPGA Options:
+      IODELAY Performance Mode       : HIGH
+
+   Selected Banks and Pins usage : 
+       Data          :bank 15(38) -> Number of pins used : 33 
+                      bank 20(38) -> Number of pins used : 11 
+                      
+       Address/Control:bank 19(38) -> Number of pins used : 29 
+                      
+       System Control:bank 13(0) -> Number of pins used : 0 
+                      bank 17(0) -> Number of pins used : 0 
+                      bank 19(38) -> Number of pins used : 2 
+                      bank 21(0) -> Number of pins used : 0 
+                      
+       System Clock  :bank 3(19) -> Number of pins used : 2 
+                      bank 4(0) -> Number of pins used : 0 
+                      
+       Total IOs used :    77
+
+Pin Selections:
+
+	SignalName   		PinName
+	ddr2_a[0]   	->	H28
+	ddr2_a[10]   	->	M26
+	ddr2_a[11]   	->	M25
+	ddr2_a[12]   	->	J25
+	ddr2_a[13]   	->	J24
+	ddr2_a[1]   	->	H27
+	ddr2_a[2]   	->	G27
+	ddr2_a[3]   	->	F26
+	ddr2_a[4]   	->	F25
+	ddr2_a[5]   	->	H24
+	ddr2_a[6]   	->	H25
+	ddr2_a[7]   	->	G26
+	ddr2_a[8]   	->	G25
+	ddr2_a[9]   	->	J27
+	ddr2_ba[0]   	->	F28
+	ddr2_ba[1]   	->	E28
+	ddr2_ba[2]   	->	G28
+	ddr2_cas#   	->	E27
+	ddr2_ck#[0]   	->	L24
+	ddr2_ck#[1]   	->	L26
+	ddr2_ck[0]   	->	K24
+	ddr2_ck[1]   	->	L25
+	ddr2_cke[0]   	->	M28
+	ddr2_cs#[0]   	->	K27
+	ddr2_cs#[1]   	->	T24
+	ddr2_dm[0]   	->	H29
+	ddr2_dm[1]   	->	L30
+	ddr2_dm[2]   	->	F10
+	ddr2_dm[3]   	->	H10
+	ddr2_dq[0]   	->	E29
+	ddr2_dq[10]   	->	J30
+	ddr2_dq[11]   	->	J31
+	ddr2_dq[12]   	->	M30
+	ddr2_dq[13]   	->	T31
+	ddr2_dq[14]   	->	R31
+	ddr2_dq[15]   	->	U30
+	ddr2_dq[16]   	->	E9
+	ddr2_dq[17]   	->	E8
+	ddr2_dq[18]   	->	F9
+	ddr2_dq[19]   	->	F8
+	ddr2_dq[1]   	->	F29
+	ddr2_dq[20]   	->	G10
+	ddr2_dq[21]   	->	G8
+	ddr2_dq[22]   	->	H8
+	ddr2_dq[23]   	->	D11
+	ddr2_dq[24]   	->	K11
+	ddr2_dq[25]   	->	J11
+	ddr2_dq[26]   	->	D12
+	ddr2_dq[27]   	->	C12
+	ddr2_dq[28]   	->	H9
+	ddr2_dq[29]   	->	G11
+	ddr2_dq[2]   	->	G30
+	ddr2_dq[30]   	->	G12
+	ddr2_dq[31]   	->	M8
+	ddr2_dq[3]   	->	F30
+	ddr2_dq[4]   	->	J29
+	ddr2_dq[5]   	->	F31
+	ddr2_dq[6]   	->	E31
+	ddr2_dq[7]   	->	L29
+	ddr2_dq[8]   	->	H30
+	ddr2_dq[9]   	->	G31
+	ddr2_dqs#[0]   	->	P29
+	ddr2_dqs#[1]   	->	L31
+	ddr2_dqs#[2]   	->	B12
+	ddr2_dqs#[3]   	->	J9
+	ddr2_dqs[0]   	->	N29
+	ddr2_dqs[1]   	->	K31
+	ddr2_dqs[2]   	->	A13
+	ddr2_dqs[3]   	->	J10
+	ddr2_odt[0]   	->	L28
+	ddr2_odt[1]   	->	R24
+	ddr2_ras#   	->	E26
+	ddr2_we#   	->	K28
+	error   	->	H15
+	idly_clk_200   	->	H19
+	phy_init_done   	->	H13
+	sys_clk   	->	H17
+	sys_rst_n   	->	G15

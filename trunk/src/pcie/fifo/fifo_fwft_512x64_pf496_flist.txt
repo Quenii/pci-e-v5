@@ -1,0 +1,18 @@
+# Output products list for <fifo_fwft_512x64_pf496>
+_xmsgs\
+fifo_fwft_512x64_pf496.asy
+fifo_fwft_512x64_pf496.gise
+fifo_fwft_512x64_pf496.ise
+fifo_fwft_512x64_pf496.ngc
+fifo_fwft_512x64_pf496.sym
+fifo_fwft_512x64_pf496.v
+fifo_fwft_512x64_pf496.veo
+fifo_fwft_512x64_pf496.vhd
+fifo_fwft_512x64_pf496.vho
+fifo_fwft_512x64_pf496.xco
+fifo_fwft_512x64_pf496.xise
+fifo_fwft_512x64_pf496_flist.txt
+fifo_fwft_512x64_pf496_readme.txt
+fifo_fwft_512x64_pf496_xdb\tmp\
+fifo_fwft_512x64_pf496_xmdf.tcl
+fifo_generator_ug175.pdf

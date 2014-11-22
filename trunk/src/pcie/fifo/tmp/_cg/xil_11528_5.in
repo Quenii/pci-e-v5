@@ -1,0 +1,77 @@
+SET_FLAG DEBUG FALSE
+SET_FLAG MODE INTERACTIVE
+SET_FLAG STANDALONE_MODE TRUE
+SET_PREFERENCE flowvendor Foundation_ISE
+SET_PREFERENCE verilogsim false
+SET_PREFERENCE vhdlsim true
+SET_PREFERENCE formalverification false
+SET_PREFERENCE subworkingdirectory ./tmp/_cg/
+SET_PREFERENCE speedgrade -1
+SET_PREFERENCE asysymbol true
+SET_PREFERENCE addpads false
+SET_PREFERENCE implementationfiletype Ngc
+SET_PREFERENCE device xc5vlx110t
+SET_PREFERENCE projectname fifo_fwft_512x64_pf496
+SET_PREFERENCE foundationsym false
+SET_PREFERENCE devicefamily virtex5
+SET_PREFERENCE busformat BusFormatAngleBracketNotRipped
+SET_PREFERENCE package ff1136
+SET_PREFERENCE createndf false
+SET_PREFERENCE simulationfiles Behavioral
+SET_PREFERENCE outputdirectory ./
+SET_PREFERENCE designentry VHDL
+SET_PREFERENCE workingdirectory .\tmp\
+SET_PREFERENCE removerpms false
+SET_PARAMETER component_name fifo_fwft_512x64_pf496
+SET_PARAMETER output_depth 512
+SET_PARAMETER programmable_full_type Single_Programmable_Full_Threshold_Constant
+SET_PARAMETER input_data_width 64
+SET_PARAMETER dout_reset_value 0
+SET_PARAMETER write_acknowledge_flag false
+SET_PARAMETER full_flags_reset_value 0
+SET_PARAMETER write_clock_frequency 1
+SET_PARAMETER programmable_empty_type No_Programmable_Empty_Threshold
+SET_PARAMETER input_depth 512
+SET_PARAMETER valid_flag false
+SET_PARAMETER inject_dbit_error false
+SET_PARAMETER overflow_sense Active_High
+SET_PARAMETER data_count_width 10
+SET_PARAMETER valid_sense Active_High
+SET_PARAMETER output_data_width 64
+SET_PARAMETER full_threshold_assert_value 496
+SET_PARAMETER write_data_count_width 10
+SET_PARAMETER overflow_flag false
+SET_PARAMETER enable_int_clk false
+SET_PARAMETER disable_timing_violations false
+SET_PARAMETER reset_pin true
+SET_PARAMETER fifo_implementation Common_Clock_Block_RAM
+SET_PARAMETER empty_threshold_assert_value 4
+SET_PARAMETER data_count true
+SET_PARAMETER inject_sbit_error false
+SET_PARAMETER use_extra_logic true
+SET_PARAMETER underflow_sense Active_High
+SET_PARAMETER read_clock_frequency 1
+SET_PARAMETER full_threshold_negate_value 495
+SET_PARAMETER almost_empty_flag false
+SET_PARAMETER underflow_flag false
+SET_PARAMETER reset_type Asynchronous_Reset
+SET_PARAMETER read_data_count_width 10
+SET_PARAMETER use_dout_reset true
+SET_PARAMETER read_data_count false
+SET_PARAMETER write_data_count false
+SET_PARAMETER almost_full_flag false
+SET_PARAMETER write_acknowledge_sense Active_High
+SET_PARAMETER empty_threshold_negate_value 5
+SET_PARAMETER use_embedded_registers false
+SET_PARAMETER performance_options First_Word_Fall_Through
+SET_PARAMETER enable_reset_synchronization true
+SET_PARAMETER enable_ecc false
+SET_CORE_CLASS com.xilinx.ip.fifo_generator_v5_3.fifo_generator_v5_3
+SET_CORE_PATH D:\FPGA\14.7\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\fifo_generator_v5_3\
+SET_CORE_GUIPATH D:\FPGA\14.7\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\fifo_generator_v5_3\gui\fifo_generator_v5_3.tcl
+SET_CORE_NAME Fifo Generator
+SET_CORE_VERSION 5.3
+SET_CORE_VLNV xilinx.com:ip:fifo_generator:5.3
+SET_CORE_DATASHEET D:\FPGA\14.7\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\fifo_generator_v5_3\doc\fifo_generator_ds317.pdf
+ADD_CORE_DOCUMENT <D:\FPGA\14.7\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\fifo_generator_v5_3\doc\fifo_generator_ds317.pdf><Data Sheet>
+ADD_CORE_DOCUMENT <D:\FPGA\14.7\ISE_DS\ISE\coregen\ip\xilinx\primary\com\xilinx\ip\fifo_generator_v5_3\doc\fifo_generator_v5_3_vinfo.html><Version Information>

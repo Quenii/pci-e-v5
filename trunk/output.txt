@@ -1,0 +1,11 @@
+Storage Target: Xilinx Flash/PROM
+Storage Family: Platform Flash
+xcf32p          [32 M]
+FF
+xcf32p
+E:\Projects\cgs-pcie\v2\gkhy\GH5007_video_sample\
+
+MCS
+Yes
+1
+No
