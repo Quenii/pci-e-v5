@@ -336,7 +336,8 @@ begin
 	begin
 		case (ep_tx_state)
 			ep_tx_s0 :					 
-			begin							
+			begin	
+				//not linkup, DMA read/Write Abort;
 				if ((!trn_lnk_up_n_r) && (!dma_wabt_rq) && (!dma_rabt_rq))	// Transaction link-up is asserted when the core and the connected upstream link partner port... 
 				begin																	// ...are ready and able to exchange data packets
 					ep_tx_state <= #tDLY ep_tx_s1;
@@ -386,6 +387,7 @@ begin
 			begin
 				if ((!dma_wabt_rq) && (!dma_rabt_rq))
 				begin
+					//Linked up
 					if (trn_lnk_up_n_r)			// Transaction link-up is deasserted when the core and link partner are attempting to establish communication, and... 
 					begin						// ...when communication with the link partner is lost due to errors on the transmission channel
 						ep_tx_state <= #tDLY ep_tx_s0;
@@ -589,7 +591,14 @@ begin
 	        			trn_teof_n_r     <= #tDLY 1'b1;
 	        			trn_tsrc_rdy_n_r <= #tDLY 1'b1;
 					end
-					else if ((rnd_rob_cnt == 2'b01) && cfg_bus_master_en_r && npst_tb_av && dma_rs && (!tx_npsttlp_cpl_lev) && (!dma_rabt_rq))
+					else if (
+					(rnd_rob_cnt == 2'b01) 
+					&& cfg_bus_master_en_r 
+					&& npst_tb_av  //buffer avaliable;
+					&& dma_rs 
+					&& (!tx_npsttlp_cpl_lev) 
+					&& (!dma_rabt_rq)
+					)
 					begin
 						ep_tx_state <= #tDLY ep_tx_s8;
 						
@@ -1107,7 +1116,7 @@ begin
 		begin
 			tx_npsttlp_cnt <= #tDLY 0;
 		end
-		else if (ep_tx_state == ep_tx_s8)
+		else if (ep_tx_state == ep_tx_s8)  //mem read32 packet
 		begin
 			tx_npsttlp_cnt <= #tDLY tx_npsttlp_cnt + 1'b1;
 		end
