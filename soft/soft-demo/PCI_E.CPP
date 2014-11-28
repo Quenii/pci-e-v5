@@ -2,8 +2,9 @@
 //#include <afx.h>//加这个头文件必须要将project下面的seting里的general从no using mfc 改为备选项任意之1.否则错误
 #include <windrvr.h>
 #include "wdc_lib.h"
-#include <wdc_defs.h>
-#include <utils.h>
+#include "wdc_defs.h"
+#include "utils.h"
+#include "status_strings.h"
 //#include <stdio.h>//这个文件后期可以不要
 #include "PCI_E.H"
 #define PCIVENDORID 0x10ee  //特定PCIE的厂商号                          //厂商号
@@ -41,7 +42,7 @@ BOOL pcie::ReadCfg(DWORD offset,UINT*outdata,UINT numbyte)//用于读取配置空间的数
 	DWORD dw;
 	if(dw=WDC_PciReadCfg(hDev,offset, outdata, numbyte),dw==0)
 		return TRUE;
-	strcpy(infor,Stat2Str(dw));
+//	strcpy(infor,Stat2Str(dw));
 	return FALSE;
 }
 //打开指定设备，该函数仅仅是打开一个设备而已,若需要中断,DMA传输等功能,则需要调用
@@ -52,20 +53,20 @@ BOOL pcie::OpenDevice(DWORD vendorid=0x10ee,DWORD deviceid=7)
 	if(dw=WDC_SetDebugOptions(WDC_DBG_DEFAULT, NULL),dw!=WD_STATUS_SUCCESS)
 	{
 		strcpy(infor,"调试环境设置错误\n");
-		strcat(infor,Stat2Str(dw));
+//		strcat(infor,Stat2Str(dw));
 		return FALSE;
 	}
 	if(dw=WDC_DriverOpen(WDC_DRV_OPEN_DEFAULT,LICENSESTR),dw!=0)
 	{
 		strcpy(infor,"windriver 打开失败\n");
-		strcat(infor,Stat2Str(dw));
+//		strcat(infor,Stat2Str(dw));
 		return FALSE;
 	}
 	BZERO(scanResult);
 	if(dw=WDC_PciScanDevices(vendorid, deviceid, &scanResult),dw!=WD_STATUS_SUCCESS)
 	{
 		strcpy(infor,"获取指定厂商号和设备号的详细信息失败！\n");
-		strcat(infor,Stat2Str(dw));
+//		strcat(infor,Stat2Str(dw));
 //		WDC_PciDeviceClose(hDev);
 		WDC_DriverClose();
 		return FALSE;
@@ -75,7 +76,7 @@ BOOL pcie::OpenDevice(DWORD vendorid=0x10ee,DWORD deviceid=7)
 	if (dw=WDC_PciGetDeviceInfo(&deviceInfo),dw!=WD_STATUS_SUCCESS)
 	{
 		strcpy(infor,"设备详细信息获取失败\n");
-		strcat(infor,Stat2Str(dw));
+//		strcat(infor,Stat2Str(dw));
 		WDC_PciDeviceClose(hDev);
 		WDC_DriverClose();
 		return FALSE;
@@ -93,7 +94,7 @@ BOOL pcie::OpenDevice(DWORD vendorid=0x10ee,DWORD deviceid=7)
 	if(dw=WDC_PciDeviceOpen(&hDev, &deviceInfo, pDevCtx, NULL, NULL, NULL),dw!=WD_STATUS_SUCCESS)
 	{
 		strcpy(infor,"指定设备打开失败\n");
-		strcat(infor,Stat2Str(dw));
+//		strcat(infor,Stat2Str(dw));
 		//WDC_DriverClose();
 		free(pDevCtx);
 		WDC_PciDeviceClose(hDev);
@@ -104,16 +105,25 @@ BOOL pcie::OpenDevice(DWORD vendorid=0x10ee,DWORD deviceid=7)
 	return TRUE;
 }
 ///////////////////////////////////////////////////////////////////////////////////////////////
-BOOL pcie::ReadBAR0(DWORD offset,UINT*outdata,UINT numbyte=0)
+BOOL pcie::ReadBAR0(DWORD offset,UINT* outdata,UINT numbyte=0)
 {
 	DWORD dw;
-	if(dw=WDC_ReadAddr32(hDev,0,offset,outdata),dw!=0)
+	if(dw=WDC_ReadAddr32(hDev, 0, offset, outdata),dw!=0)
 	{
 		strcpy(infor,"读取BAR0空间错误\n");
-		strcat(infor,Stat2Str(dw));
+//		strcat(infor,Stat2Str(dw));
 		return FALSE;
 	}
 	return TRUE;
+
+	//WD_TRANSFER trns;
+	//BZERO(trns);
+	//trns.cmdTrans = RP_DWORD; // R-Read P-Port WORD
+	//trns.dwPort = offset;
+	//WD_Transfer( hDev, &trns); // Perform read
+	//*outdata = trns.Data.Word;
+	//return TRUE;
+
 }
 BOOL pcie::WriteBAR0(DWORD offset,UINT indata,UINT numbyte=0)
 {
@@ -121,10 +131,19 @@ BOOL pcie::WriteBAR0(DWORD offset,UINT indata,UINT numbyte=0)
 	if(dw=WDC_WriteAddr32(hDev,0,offset,indata),dw!=0)
 	{
 		strcpy(infor,"写BAR0空间错误\n");
-		strcat(infor,Stat2Str(dw));
+//		strcat(infor,Stat2Str(dw));
 		return FALSE;
 	}
 	return TRUE;
+
+	//WD_TRANSFER trns;
+	//BZERO(trns);
+	//trns.cmdTrans = WP_DWORD; // W-Write P-Port DWORD
+	//trns.dwPort = offset;
+	//trns.Data.Dword = indata;
+	//WD_Transfer( hDev, &trns); // Perform write
+	//return TRUE;
+
 }
 
 ////////////////////////////////////////////////////////////////////////////////////////////////
@@ -151,7 +170,7 @@ BOOL pcie::DMAReadMenAlloc(UINT menBlocknum=4,UINT blocksize=32*1024)
 	if(status=WDC_DMAContigBufLock(hDev,&pRbuffer[i],DMA_WRITE_TO_DEVICE,blocksize,&pprDma[i]),status!=0)
 	{	
 		strcpy(infor,"物理内存映射失败\n");
-		strcat(infor,Stat2Str(status));
+//		strcat(infor,Stat2Str(status));
 		pprDma[i]=NULL;
 		pRbuffer[i]=NULL;
 		CloseDevice();
@@ -184,7 +203,7 @@ BOOL pcie::DMAWriteMenAlloc(UINT menBlocknum=6,UINT blocksize=32*1024)
 	if(status=WDC_DMAContigBufLock(hDev,&pWbuffer[i],DMA_READ_FROM_DEVICE,blocksize,&ppwDma[i]),status!=0)
 	{	
 		strcpy(infor,"物理内存映射失败\n");
-		strcat(infor,Stat2Str(status));
+//		strcat(infor,Stat2Str(status));
 		pWbuffer[i]=ppwDma[i]=NULL;
 		CloseDevice();
 		return FALSE;
@@ -408,7 +427,7 @@ BOOL pcie::IntEnable(WDC_DEVICE_HANDLE hDev, PCIINT_HANDLER funcIntHandler)
     if (WD_STATUS_SUCCESS != dwStatus)
 	{
 		strcpy(infor,"中断处理函数注册失败\n");
-		strcat(infor,Stat2Str(dwStatus));
+//		strcat(infor,Stat2Str(dwStatus));
 		return FALSE;
 	}        
 	return TRUE;
@@ -670,7 +689,8 @@ BOOL pcie::FPGAReset()
 		countt++;
 		//ReadBAR0(0x44, &reg44);
 		//WDC_ReadAddr32(hDev,0,0x44,&reg44);//stat reg
-		WDC_ReadAddr32(hDev,0,0x38,&reg44);//stat reg
+		//WDC_ReadAddr32(hDev,0,0x38,&reg44);//stat reg
+		ReadBAR0(0x38, &reg44);
 		if (isreal)
 		{
 			//if((reg44&REALOP)==REALOP)//DDR@2,链路和光纤检查
