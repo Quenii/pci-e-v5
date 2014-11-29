@@ -56,7 +56,7 @@ BEGIN_MESSAGE_MAP(CRecordDlg, CDialog)
 	ON_CBN_SELCHANGE(IDC_LOCATION, OnSelchangeLocation)
 	ON_BN_CLICKED(IDC_RECSTOP, OnRecstop)
 	ON_MESSAGE(WAITFORENDREC,WaitForEndRec)
-//	ON_WM_TIMER()
+	ON_WM_TIMER()
 	//}}AFX_MSG_MAP
 END_MESSAGE_MAP()
 
@@ -310,7 +310,7 @@ void CRecordDlg::OnSelchangeLocation()
 
 
 
-void CRecordDlg::OnTimer(UINT nIDEvent) 
+void CRecordDlg::OnTimer(UINT_PTR nIDEvent) 
 {
 	// TODO: Add your message handler code here and/or call default
 	UINT times;
