@@ -339,7 +339,7 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\WinDriver\include,C:\WinDriver"
+				AdditionalIncludeDirectories=".\include"
 				PreprocessorDefinitions="KERNEL_64BIT;_DEBUG;_WINDOWS;WIN32"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
