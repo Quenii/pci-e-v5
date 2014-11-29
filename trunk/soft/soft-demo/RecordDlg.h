@@ -60,7 +60,7 @@ protected:
 	afx_msg void OnSelchangeLocation();
 	afx_msg void OnRecstop();
 	virtual void OnCancel();
-	afx_msg void OnTimer(UINT nIDEvent);
+	afx_msg void OnTimer(UINT_PTR nIDEvent);
 	afx_msg LRESULT WaitForEndRec(WPARAM wParam, LPARAM lParam);
 	//}}AFX_MSG
 	DECLARE_MESSAGE_MAP()

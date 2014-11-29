@@ -84,7 +84,7 @@ BEGIN_MESSAGE_MAP(CPciRecReplay, CDialog)
 	//{{AFX_MSG_MAP(CPciRecReplay)
 	ON_BN_CLICKED(IDOK, OnStart)
 	ON_BN_CLICKED(IDC_STOP, OnStop)
-//	ON_WM_TIMER()
+	ON_WM_TIMER()
 	ON_MESSAGE(WAITFORENDREPLAY,WaitForEndReply)
 	ON_WM_CLOSE()
 	//}}AFX_MSG_MAP
@@ -212,7 +212,7 @@ void CPciRecReplay::OnCancel()
 	CDialog::OnCancel();
 }
 
-void CPciRecReplay::OnTimer(UINT nIDEvent) 
+void CPciRecReplay::OnTimer(UINT_PTR nIDEvent) 
 {
 	// TODO: Add your message handler code here and/or call default
     float times;
