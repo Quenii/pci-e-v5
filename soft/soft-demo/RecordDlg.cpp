@@ -133,7 +133,7 @@ void CRecordDlg::OnStartRecord()
 			pPcieProject->pci_e.GetLastInfo(err);
 			tempstr=err;
 			MessageBox(tempstr,"错误提示");
-			CloseHandle(hf);
+//			CloseHandle(hf);
 			return;
 		}
 		starttime=CTime::GetCurrentTime();
@@ -149,7 +149,7 @@ void CRecordDlg::OnStartRecord()
 			pPcieProject->pci_e.GetLastInfo(err);
 			tempstr=err;
 			MessageBox(tempstr,"错误提示");
-			CloseHandle(hf);
+//			CloseHandle(hf);
 			return;
 		}
 		starttime=CTime::GetCurrentTime();
