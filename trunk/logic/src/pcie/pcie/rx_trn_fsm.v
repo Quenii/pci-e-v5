@@ -689,6 +689,7 @@ begin
 				dma_rr_si <= #tDLY 1'b0;
 			end
 			
+			-- down stream fifo write;
 			ep_rx_s9 :
 			begin
 				if (trn_lnk_up_n_r)			// Transaction link-up is deasserted when the core and link partner are attempting to establish communication, and... 
