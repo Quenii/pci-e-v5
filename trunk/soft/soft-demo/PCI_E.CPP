@@ -1,5 +1,6 @@
 #include "StdAfx.h"//这个头文件必须后期加上去
 //#include <afx.h>//加这个头文件必须要将project下面的seting里的general从no using mfc 改为备选项任意之1.否则错误
+#define KERNEL_64BIT
 #include <windrvr.h>
 #include "wdc_lib.h"
 #include "wdc_defs.h"
@@ -7,6 +8,8 @@
 #include "status_strings.h"
 //#include <stdio.h>//这个文件后期可以不要
 #include "PCI_E.H"
+
+
 #define PCIVENDORID 0x10ee  //特定PCIE的厂商号                          //厂商号
 #define PCIDEVICEID	0x7		
 #define STATBIT17   0x00020000
@@ -108,7 +111,8 @@ BOOL pcie::OpenDevice(DWORD vendorid=0x10ee,DWORD deviceid=7)
 BOOL pcie::ReadBAR0(DWORD offset,UINT* outdata,UINT numbyte=0)
 {
 	DWORD dw;
-	if(dw=WDC_ReadAddr32(hDev, 0, offset, outdata),dw!=0)
+	KPTR offset_64bit = offset;
+	if(dw=WDC_ReadAddr32(hDev, 0, offset_64bit, outdata),dw!=0)
 	{
 		strcpy(infor,"读取BAR0空间错误\n");
 //		strcat(infor,Stat2Str(dw));
@@ -128,7 +132,8 @@ BOOL pcie::ReadBAR0(DWORD offset,UINT* outdata,UINT numbyte=0)
 BOOL pcie::WriteBAR0(DWORD offset,UINT indata,UINT numbyte=0)
 {
 	DWORD dw;
-	if(dw=WDC_WriteAddr32(hDev,0,offset,indata),dw!=0)
+	KPTR offset_64bit = offset;
+	if(dw=WDC_WriteAddr32(hDev,0,offset_64bit,indata),dw!=0)
 	{
 		strcpy(infor,"写BAR0空间错误\n");
 //		strcat(infor,Stat2Str(dw));
