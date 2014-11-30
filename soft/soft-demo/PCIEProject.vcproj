@@ -241,8 +241,8 @@
 			<Tool
 				Name="VCCLCompilerTool"
 				Optimization="0"
-				AdditionalIncludeDirectories="C:\WinDriver\include,C:\WinDriver"
-				PreprocessorDefinitions="KERNEL_64BIT;_DEBUG;_WINDOWS;WIN32"
+				AdditionalIncludeDirectories="./include"
+				PreprocessorDefinitions="KERNEL_64BIT;_DEBUG;_WINDOWS;WIN32;x86"
 				MinimalRebuild="true"
 				BasicRuntimeChecks="3"
 				RuntimeLibrary="1"
@@ -372,6 +372,7 @@
 				OutputFile=".\Debug/PCIEProject.exe"
 				LinkIncremental="2"
 				SuppressStartupBanner="true"
+				AdditionalLibraryDirectories="./"
 				GenerateDebugInformation="true"
 				ProgramDatabaseFile=".\Debug/PCIEProject.pdb"
 				SubSystem="2"
@@ -838,6 +839,114 @@
 				RelativePath="StdAfx.h"
 				>
 			</File>
+			<Filter
+				Name="windriver"
+				>
+				<File
+					RelativePath=".\include\cstring.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\kpstdlib.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\status_strings.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\utils.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\wd_kp.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\wd_log.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\wd_ver.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\wdc_defs.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\wdc_lib.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\wdu_lib.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\windrvr.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\windrvr_events.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\windrvr_hotswap.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\windrvr_int_thread.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\windrvr_usb.h"
+					>
+				</File>
+			</Filter>
+			<Filter
+				Name="windriver_samples"
+				>
+				<File
+					RelativePath=".\include\samples\shared\bits.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\diag_lib.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\pccard_cis.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\pci_diag_lib.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\pci_regs.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\pcmcia_diag_lib.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\print_struct.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\usb_diag_lib.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\usb_diag_lib_v52.h"
+					>
+				</File>
+				<File
+					RelativePath=".\include\samples\shared\wdc_diag_lib.h"
+					>
+				</File>
+			</Filter>
 		</Filter>
 		<Filter
 			Name="Resource Files"
