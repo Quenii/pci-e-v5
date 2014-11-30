@@ -195,7 +195,7 @@ localparam 	ep_rx_s5 	= 4'b0101;
 localparam 	ep_rx_s6 	= 4'b0110;
 localparam 	ep_rx_s7 	= 4'b0111;
 localparam 	ep_rx_s8	= 4'b1000;
-localparam 	ep_rx_s9	= 4'b1001;
+localparam 	ep_rx_s9	= 4'b1001; // down stream fifo write;
 localparam 	ep_rx_sa	= 4'b1010;
 
 //---------------------------------------------------------------------
@@ -406,6 +406,7 @@ begin
 					end
 					else if ((!trn_rsof_n) && (!trn_rsrc_rdy_n) && (!trn_rdst_rdy_n))
 					begin
+						//CplD, thus downstream DMA
 						if ((trn_rd[62:56] == `CplD_FMT_TYPE) && (trn_rd[15:13] == 3'b000) && trn_rerrfwd_n && dma_rs)
 						begin
 							ep_rx_state <= #tDLY ep_rx_s8;
@@ -691,7 +692,8 @@ begin
 				dma_rr_si <= #tDLY 1'b0;
 			end
 			
-			-- down stream fifo write;			ep_rx_s9 :
+			// down stream fifo write;			
+			ep_rx_s9 :
 			begin
 				if (trn_lnk_up_n_r)			// Transaction link-up is deasserted when the core and link partner are attempting to establish communication, and... 
 				begin						// ...when communication with the link partner is lost due to errors on the transmission channel
