@@ -1141,7 +1141,7 @@ begin
 		end
 		else
 		begin
-			npsttlp_tg <= #tDLY {3'b000, tx_npsttlp_cnt[4:0]};
+			npsttlp_tg <= #tDLY {5'b00000, tx_npsttlp_cnt[2:0]}; //loops in 0~7
 		end
 	end
 end
