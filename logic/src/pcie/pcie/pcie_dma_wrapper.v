@@ -317,7 +317,7 @@ rx_trn_fsm
 // PCI Express Downstream Buffer
 pcie_ds_buf 
 	# (
-		.tDLY					(tDLY)
+		.tags					(8)
 	)
 	
 	pcie_ds_buf_inst
@@ -328,7 +328,8 @@ pcie_ds_buf
 		.trn_reset_n			(sys_reset_n),
 		
 		// FIFO Interface for PCI Express Downstream
-		.fifo_wrreq_pcie_ds		(fifo_wrreq_pcie_ds[0]),
+		.fifo_rdy_pcie_ds		(fifo_rdy_pcie_ds),
+		.fifo_wrreq_pcie_ds		(fifo_wrreq_pcie_ds),
 		.fifo_data_pcie_ds		(fifo_data_pcie_ds),
 		.fifo_rdreq_pcie_ds		(fifo_rdreq_pcie_ds),
 		.fifo_q_pcie_ds			(fifo_q_pcie_ds),
