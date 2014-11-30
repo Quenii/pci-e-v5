@@ -38,6 +38,7 @@
 
 module rx_trn_fsm 
 	# (
+		parameter	tags		= 8,
 		parameter	tDLY		= 0								// Simulation delay
 	)
 	
@@ -56,50 +57,51 @@ module rx_trn_fsm
 		input		[63:0] 		trn_rd,							// Receive Data
 		input					trn_rerrfwd_n, 					// Receive Error Forward, Active low
 		input					trn_rsrc_dsc_n, 				// Receive Source Discontinue, Active low
-		output					trn_rnp_ok_n, 					// Receive Non-Posted OK, Active low
-		output					trn_rcpl_streaming_n, 			// Receive Completion Streaming, Active low
-		input		[6:0] 		trn_rbar_hit_n, 				// Receive BAR Hit, Active low
-		input		[7:0] 		trn_rfc_ph_av, 					// Receive Posted Header Flow Control Credits Available
-		input		[11:0] 		trn_rfc_pd_av, 					// Receive Posted Data Flow Control Credits Available
-		input		[7:0] 		trn_rfc_nph_av, 				// Receive Non-Posted Header Flow Control Credits Available
-		input		[11:0] 		trn_rfc_npd_av, 				// Receive Non-Posted Data Flow Control Credits Available
+		output				trn_rnp_ok_n, 					// Receive Non-Posted OK, Active low
+		output				trn_rcpl_streaming_n, 			// Receive Completion Streaming, Active low
+		input		[6:0] 	trn_rbar_hit_n, 				// Receive BAR Hit, Active low
+		input		[7:0] 	trn_rfc_ph_av, 					// Receive Posted Header Flow Control Credits Available
+		input		[11:0] 	trn_rfc_pd_av, 					// Receive Posted Data Flow Control Credits Available
+		input		[7:0] 	trn_rfc_nph_av, 				// Receive Non-Posted Header Flow Control Credits Available
+		input		[11:0] 	trn_rfc_npd_av, 				// Receive Non-Posted Data Flow Control Credits Available
 		
 		// DMA Control and Status Register
-		input		[31:0]		dmarxs,							//
+		input		[31:0]	dmarxs,							//
 		input					dma_rabt_rq,					//
-		output					dma_rabt_ack,					//
+		output				dma_rabt_ack,					//
 		input					dma_rs,							//
-		output					dma_rd,							//
+		output				dma_rd,							//
 		
 		// B0 Info
 		output					b0_w32_w,						//
 		output		[3:0]		b0_w32_be,						//
-		output		[31:0]		b0_w32_d,						//
-		output		[31:0]		b0_w32_a,						//
+		output		[31:0]	b0_w32_d,						//
+		output		[31:0]	b0_w32_a,						//
 		output		[2:0]		b0_r32_tc,						//
 		output		[1:0]		b0_r32_at,						//
-		output		[15:0]		b0_r32_rqid,					//
+		output		[15:0]	b0_r32_rqid,					//
 		output		[7:0]		b0_r32_tg,						//
 		output					b0_r32_r,						//
 		output		[3:0]		b0_r32_be,						//
-		output		[31:0]		b0_r32_a,						//
+		output		[31:0]	b0_r32_a,						//
 		
 		// B1 Info
 		output					b1_w32_w,						//
 		output		[3:0]		b1_w32_be,						//
-		output		[31:0]		b1_w32_d,						//
-		output		[31:0]		b1_w32_a,						//
+		output		[31:0]	b1_w32_d,						//
+		output		[31:0]	b1_w32_a,						//
 		output		[2:0]		b1_r32_tc,						//
 		output		[1:0]		b1_r32_at,						//
-		output		[15:0]		b1_r32_rqid,					//
+		output		[15:0]	b1_r32_rqid,					//
 		output		[7:0]		b1_r32_tg,						//
 		output					b1_r32_r,						//
 		output		[3:0]		b1_r32_be,						//
-		output		[31:0]		b1_r32_a,						//
+		output		[31:0]	b1_r32_a,						//
 		
 		// FIFO Interface for PCI Express Downstream
-		output					fifo_wrreq_pcie_ds,				// fifo write request
-		output		[63:0]		fifo_data_pcie_ds,				// fifo write data
+		output		[tags-1:0]		fifo_rdy_pcie_ds,		//coresponding to tags in tx module
+		output		[tags-1:0]		fifo_wrreq_pcie_ds,				// fifo write request
+		output		[63:0]	fifo_data_pcie_ds,				// fifo write data
 		
 		// B0 Arb
 		output					b0_cpld_rq,						//
@@ -164,7 +166,7 @@ reg					b1_cpld_ar;
 reg					b1_cpld_rq_r;
 reg					b1_cpld_rdy_n;
 
-reg					fifo_w_r;
+reg		[tags-1:0]	fifo_w_r;
 reg		[63:0]		fifo_d_r;
 
 reg		[31:0]		cpld_dl;
@@ -244,8 +246,8 @@ assign	b1_r32_r 				= b1_r32_r_r;
 assign 	b1_r32_be 				= b1_r32_be_r;
 assign 	b1_r32_a 				= b1_r32_a_r;
 
-assign 	fifo_wrreq_pcie_ds 		= fifo_w_r;
-assign 	fifo_data_pcie_ds 		= fifo_d_r;
+assign 	fifo_wrreq_pcie_ds 	= fifo_w_r;
+assign 	fifo_data_pcie_ds 	= fifo_d_r;
 		
 assign 	b0_cpld_rq 				= b0_cpld_rq_r;	
 assign 	b1_cpld_rq 				= b1_cpld_rq_r;				
@@ -318,7 +320,7 @@ begin
 		b1_r32_tg_r <= #tDLY 0;
 		b1_cpld_ar <= #tDLY 1'b0;
 		
-		fifo_w_r <= #tDLY 1'b0;
+		fifo_w_r <= #tDLY { tags {1'b0} };//tags'b00000000;
 		fifo_d_r <= #tDLY 64'h0000000000000000;
 		
 		cpld_dl <= #tDLY 0;
@@ -384,7 +386,7 @@ begin
 				b1_r32_tg_r <= #tDLY 0;
 				b1_cpld_ar <= #tDLY 1'b0;
 				
-				fifo_w_r <= #tDLY 1'b0;
+				fifo_w_r <= #tDLY { tags {1'b0} };//tags'b00000000;
 
 				cpld_dl <= #tDLY 0;
 				cpld_tlen <= #tDLY 0; 
@@ -526,7 +528,7 @@ begin
 				b0_w32_w_r <= #tDLY 1'b0;
 				b1_w32_w_r <= #tDLY 1'b0;
 				
-				fifo_w_r <= #tDLY 1'b0;
+				fifo_w_r <= #tDLY { tags {1'b0} };//tags'b00000000;
 			end
 			
 			ep_rx_s2 :
@@ -689,8 +691,7 @@ begin
 				dma_rr_si <= #tDLY 1'b0;
 			end
 			
-			-- down stream fifo write;
-			ep_rx_s9 :
+			-- down stream fifo write;			ep_rx_s9 :
 			begin
 				if (trn_lnk_up_n_r)			// Transaction link-up is deasserted when the core and link partner are attempting to establish communication, and... 
 				begin						// ...when communication with the link partner is lost due to errors on the transmission channel
@@ -720,14 +721,14 @@ begin
 				
 				if ((!trn_rsrc_rdy_n) && (!trn_rdst_rdy_n))
 				begin
-					fifo_w_r <= #tDLY 1'b1;
+					fifo_w_r[0] <= #tDLY 1'b1; //to be modified according to tags;
 					fifo_d_r <= #tDLY {trn_rd[39:32], trn_rd[47:40], trn_rd[55:48], trn_rd[63:56], cpld_dl};
 					
 					cpld_dl <= #tDLY {trn_rd[7:0], trn_rd[15:8], trn_rd[23:16], trn_rd[31:24]};
 				end
 				else
 				begin
-					fifo_w_r <= #tDLY 1'b0;
+					fifo_w_r <= #tDLY { tags {1'b0} };//tags'b00000000;
 				end
 			end
 			
@@ -739,7 +740,7 @@ begin
 				
 				dma_rd_r <= #tDLY 1'b0;
 				
-				fifo_w_r <= #tDLY 1'b0;
+				fifo_w_r <= #tDLY { tags {1'b0} };//tags'b00000000;
 			end
 			
 			default :
@@ -782,7 +783,7 @@ begin
 				b1_r32_rqid_r <= #tDLY 'bx;
 				b1_r32_tg_r <= #tDLY 'bx;
 				
-				fifo_w_r <= #tDLY 1'bx;
+				fifo_w_r <= #tDLY { tags {1'bx} };//tags'bxxxxxxxx;
 				fifo_d_r <= #tDLY 64'hxxxxxxxxxxxxxxxx;
 				
 				cpld_dl <= #tDLY 'bx;
@@ -934,7 +935,7 @@ always@(posedge trn_clk, negedge trn_reset_n)
 begin
 	if (!trn_reset_n)
 	begin
-        trn_rcpl_streaming_n_r <= #tDLY 1'b1;
+	trn_rcpl_streaming_n_r <= #tDLY 1'b1;
 	end
 	else
 	begin
@@ -944,7 +945,7 @@ begin
 		end
 		else if (dma_rs)
 		begin
-	       	trn_rcpl_streaming_n_r <= #tDLY 1'b0;
+			trn_rcpl_streaming_n_r <= #tDLY 1'b0;
 		end
 	end
 end
@@ -957,16 +958,13 @@ always@(posedge trn_clk, negedge trn_reset_n)
 begin
 	if (!trn_reset_n)
 	begin
-        trn_rnp_ok_n_r <= #tDLY 1'b0;
+		trn_rnp_ok_n_r <= #tDLY 1'b0;
 	end
 	else
 	begin
 		trn_rnp_ok_n_r <= #tDLY 1'b0;
 	end
 end
-
-
-
 
 
 endmodule
