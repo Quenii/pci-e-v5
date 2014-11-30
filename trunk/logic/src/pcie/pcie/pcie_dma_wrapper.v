@@ -25,6 +25,7 @@
 
 module pcie_dma_wrapper 
 	# (
+		parameter 	tags		= 8,
 		parameter	tDLY		= 0									// Simulation delay
 	)
 	
@@ -195,7 +196,8 @@ wire		[1:0]		b1_r32_at;
 wire		[15:0]		b1_r32_rqid;
 wire		[7:0]		b1_r32_tg;
 
-wire					fifo_wrreq_pcie_ds;
+wire		[tags-1:0]	fifo_rdy_pcie_ds;
+wire		[tags-1:0]	fifo_wrreq_pcie_ds;
 wire		[63:0]		fifo_data_pcie_ds;
 wire					fifo_prog_full_pcie_ds;
 
@@ -236,6 +238,7 @@ assign 	#tDLY cfg_dsn = 64'h0123456789abcdef;
 // Receive TRN FSM
 rx_trn_fsm 
 	# (
+		.tags							(tags),
 		.tDLY							(tDLY)
 	)
 	
@@ -297,6 +300,7 @@ rx_trn_fsm
 		.b1_r32_a						(b1_r32_a),
 		
 		// FIFO Interface for PCI Express Downstream
+		.fifo_rdy_pcie_ds				(fifo_rdy_pcie_ds),
 		.fifo_wrreq_pcie_ds				(fifo_wrreq_pcie_ds),
 		.fifo_data_pcie_ds				(fifo_data_pcie_ds),
 		
@@ -324,7 +328,7 @@ pcie_ds_buf
 		.trn_reset_n			(sys_reset_n),
 		
 		// FIFO Interface for PCI Express Downstream
-		.fifo_wrreq_pcie_ds		(fifo_wrreq_pcie_ds),
+		.fifo_wrreq_pcie_ds		(fifo_wrreq_pcie_ds[0]),
 		.fifo_data_pcie_ds		(fifo_data_pcie_ds),
 		.fifo_rdreq_pcie_ds		(fifo_rdreq_pcie_ds),
 		.fifo_q_pcie_ds			(fifo_q_pcie_ds),

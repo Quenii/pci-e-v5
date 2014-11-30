@@ -314,7 +314,7 @@ begin  -- archi
 
 
   cdc_fifo_rst     <= sys_rst;
-  cdc_fifo_wr_clk  <= sys_clk; -- ddr2_fifo_clk;
+  cdc_fifo_wr_clk  <= clk33m_i; -- ddr2_fifo_clk;
   ddr2_fifo_rd_en  <= (not ddr2_fifo_empty) and (not cdc_fifo_full);
   cdc_fifo_wr_en   <= not cdc_fifo_full;
 --  cdc_fifo_wr_data <= ddr2_fifo_rd_data;
