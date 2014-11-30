@@ -27,9 +27,7 @@ ENTITY pcie_dma_top IS
       PCIE_REFCLKN            : IN STD_LOGIC;
       PERSTN                  : IN STD_LOGIC;
       
-      USER_LED0               : OUT STD_LOGIC;
-      USER_LED1               : OUT STD_LOGIC;
-      USER_LED2               : OUT STD_LOGIC;
+      USER_LED               : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
       
       pci_exp_txp             : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
       pci_exp_txn             : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
@@ -129,11 +127,11 @@ BEGIN
    fifo_empty_pcie_ds <= fifo_empty_pcie_ds_xhdl0;
    record_en <= record_en_xhdl6;
    
-   USER_LED0 <= trn_lnk_up_n;
+   USER_LED(0) <= trn_lnk_up_n;
    
-   USER_LED1 <= (NOT((record_en_xhdl6 OR play_en)));
+   USER_LED(1) <= (NOT((record_en_xhdl6 OR play_en)));
    
-   USER_LED2 <= NOT(sim_error);
+   USER_LED(2) <= NOT(sim_error);
    
    
    

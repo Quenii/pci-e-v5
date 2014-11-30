@@ -175,9 +175,7 @@ architecture archi of top is
   
 begin  -- archi
 
-  
-  led_n_o(1)          <= pcie_link_up_n;
-  led_n_o(2)          <= sys_rst;
+  led_n_o(5)          <= sys_rst;
   
   clk_rst_inst : entity work.clk_rst_pro
     port map (
@@ -220,10 +218,10 @@ begin  -- archi
   process (clk_200m, fifo1_rst)
   begin  -- process
     if fifo1_rst = '1' then             -- asynchronous reset (active low)
-      led_n_o(5) <= '1';
+      led_n_o(4) <= '1';
     elsif clk_200m'event and clk_200m = '1' then  -- rising clock edge
       if full = '1' then
-        led_n_o(5) <= '0';
+        led_n_o(4) <= '0';
       end if;
     end if;
   end process;
@@ -361,9 +359,7 @@ begin  -- archi
       pci_exp_rxp            => pci_exp_rxp,
       pci_exp_rxn            => pci_exp_rxn,
       PERSTN                 => pcie_rst_n,
-      USER_LED0              => pcie_link_up_n,
-      USER_LED1              => led_n_o(3),
-      USER_LED2              => led_n_o(4),
+      USER_LED              => led_n_o(3 downto 1),
       pcie_trn_clk           => pcie_trn_clk,
       fifo_wrreq_pcie_us     => pcie_usfifo_wr_en,
       fifo_data_pcie_us      => pcie_usfifo_wr_data,
