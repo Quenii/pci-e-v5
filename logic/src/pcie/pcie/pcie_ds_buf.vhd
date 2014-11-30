@@ -34,7 +34,8 @@ entity pcie_ds_buf is
     trn_reset_n : in std_logic;         -- Transaction Reset; Active low
 
     -- FIFO Interface for PCI Express Downstream
-    fifo_rdy_pcie_ds       : in  std_logic_vector(tags-1 downto 0);  -- fifo write request
+    fifo_ack_pcie_ds       : out  std_logic_vector(tags-1 downto 0);  -- fifo ack
+    fifo_rdy_pcie_ds       : in  std_logic_vector(tags-1 downto 0);  -- fifo rdy
     fifo_wrreq_pcie_ds     : in  std_logic_vector(tags-1 downto 0);  -- fifo write request
     fifo_data_pcie_ds      : in  std_logic_vector(63 downto 0);  -- fifo write data
     fifo_rdreq_pcie_ds     : in  std_logic;  -- fifo read request
@@ -45,8 +46,6 @@ entity pcie_ds_buf is
 end pcie_ds_buf;
 
 architecture impl of pcie_ds_buf is
-
-  type ARRAY_64b is array (tags-1 downto 0) of std_logic_vector(63 downto 0);
 
   component fifo_std_512x64_pf496
     port (
@@ -61,11 +60,18 @@ architecture impl of pcie_ds_buf is
       prog_full : out std_logic);
   end component;
 
+  type ARRAY_64b is array (tags-1 downto 0) of std_logic_vector(63 downto 0);
+  type state_t is (s_idle, s_inc, s_dump);
+
   signal sys_reset : std_logic;
   signal rd_en     : std_logic_vector(tags-1 downto 0);
   signal dout      : ARRAY_64b;
   signal prog_full : std_logic_vector(tags-1 downto 0);
   signal empty     : std_logic_vector(tags-1 downto 0);
+
+  signal index : integer range tags-1 downto 0;
+  signal state : state_t;
+  
 begin  -- impl
 
   sys_reset <= not trn_reset_n;
@@ -85,10 +91,50 @@ begin  -- impl
         );
   end generate GEN_FIFO;
 
-  rd_en(0)               <= fifo_rdreq_pcie_ds;
-  fifo_empty_pcie_ds     <= empty(0);
-  fifo_q_pcie_ds         <= dout(0);
-  fifo_prog_full_pcie_ds <= prog_full(0);
+  process (sys_reset, trn_clk)
+  begin  -- process
+    if sys_reset = '1' then
+      state <= s_idle;
+      index <= 0;
+    elsif rising_edge(trn_clk) then
+      case state is
+        when s_idle =>
+          if fifo_rdy_pcie_ds(index) = '1' then
+            state <= s_dump;
+          end if;
+        when s_dump =>
+          if empty(index) = '1' then
+            state <= s_inc;
+          end if;
+        when s_inc =>
+          state <= s_idle;
+          if index < tags-1 then
+            index <= index + 1;
+          else
+            index <= 0;
+          end if;
+        when others => null;
+      end case;
+      
+    end if;
+  end process;
+
+  process (empty, fifo_rdreq_pcie_ds, index, prog_full, state)
+  begin  -- process
+    if state = s_dump then
+      fifo_ack_pcie_ds(index) <= '1';
+      rd_en(index)            <= fifo_rdreq_pcie_ds;
+      fifo_empty_pcie_ds      <= empty(index);
+      fifo_prog_full_pcie_ds  <= prog_full(index);
+    else
+      fifo_ack_pcie_ds       <= (others => '0');
+      rd_en                  <= (others => '0');
+      fifo_empty_pcie_ds     <= '1';
+      fifo_prog_full_pcie_ds <= '0';
+    end if;
+  end process;
+
+  fifo_q_pcie_ds <= dout(index);
   
 
 end impl;

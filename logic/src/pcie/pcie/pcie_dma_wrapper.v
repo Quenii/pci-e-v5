@@ -196,6 +196,7 @@ wire		[1:0]		b1_r32_at;
 wire		[15:0]		b1_r32_rqid;
 wire		[7:0]		b1_r32_tg;
 
+wire		[tags-1:0]	fifo_ack_pcie_ds;
 wire		[tags-1:0]	fifo_rdy_pcie_ds;
 wire		[tags-1:0]	fifo_wrreq_pcie_ds;
 wire		[63:0]		fifo_data_pcie_ds;
@@ -300,6 +301,7 @@ rx_trn_fsm
 		.b1_r32_a						(b1_r32_a),
 		
 		// FIFO Interface for PCI Express Downstream
+		.fifo_ack_pcie_ds				(fifo_ack_pcie_ds),
 		.fifo_rdy_pcie_ds				(fifo_rdy_pcie_ds),
 		.fifo_wrreq_pcie_ds				(fifo_wrreq_pcie_ds),
 		.fifo_data_pcie_ds				(fifo_data_pcie_ds),
@@ -328,6 +330,7 @@ pcie_ds_buf
 		.trn_reset_n			(sys_reset_n),
 		
 		// FIFO Interface for PCI Express Downstream
+		.fifo_ack_pcie_ds		(fifo_ack_pcie_ds),
 		.fifo_rdy_pcie_ds		(fifo_rdy_pcie_ds),
 		.fifo_wrreq_pcie_ds		(fifo_wrreq_pcie_ds),
 		.fifo_data_pcie_ds		(fifo_data_pcie_ds),

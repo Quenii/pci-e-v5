@@ -99,6 +99,7 @@ module rx_trn_fsm
 		output		[31:0]	b1_r32_a,						//
 		
 		// FIFO Interface for PCI Express Downstream
+		input		[tags-1:0]		fifo_ack_pcie_ds,
 		output		[tags-1:0]		fifo_rdy_pcie_ds,		//coresponding to tags in tx module
 		output		[tags-1:0]		fifo_wrreq_pcie_ds,				// fifo write request
 		output		[63:0]	fifo_data_pcie_ds,				// fifo write data
@@ -166,6 +167,7 @@ reg					b1_cpld_ar;
 reg					b1_cpld_rq_r;
 reg					b1_cpld_rdy_n;
 
+reg		[tags-1:0]	fifo_rdy_r;
 reg		[tags-1:0]	fifo_w_r;
 reg		[63:0]		fifo_d_r;
 
@@ -180,7 +182,9 @@ reg					trn_rdst_rdy_n_r;
 reg					trn_rnp_ok_n_r;
 reg					trn_rcpl_streaming_n_r;
 
-
+reg [9:0]	cpld_len;
+reg [11:0]  cpld_remain_bytes;
+integer index;
 
 
 //---------------------------------------------------------------------
@@ -246,6 +250,7 @@ assign	b1_r32_r 				= b1_r32_r_r;
 assign 	b1_r32_be 				= b1_r32_be_r;
 assign 	b1_r32_a 				= b1_r32_a_r;
 
+assign 	fifo_rdy_pcie_ds 	= fifo_rdy_r;
 assign 	fifo_wrreq_pcie_ds 	= fifo_w_r;
 assign 	fifo_data_pcie_ds 	= fifo_d_r;
 		
@@ -320,8 +325,10 @@ begin
 		b1_r32_tg_r <= #tDLY 0;
 		b1_cpld_ar <= #tDLY 1'b0;
 		
-		fifo_w_r <= #tDLY { tags {1'b0} };//tags'b00000000;
+//		fifo_rdy_r <= #tDLY { tags {1'b0} };
+		fifo_w_r <= #tDLY { tags {1'b0} };
 		fifo_d_r <= #tDLY 64'h0000000000000000;
+		index <= #tDLY 0;
 		
 		cpld_dl <= #tDLY 0;
 		cpld_tlen <= #tDLY 0; 
@@ -410,6 +417,9 @@ begin
 						if ((trn_rd[62:56] == `CplD_FMT_TYPE) && (trn_rd[15:13] == 3'b000) && trn_rerrfwd_n && dma_rs)
 						begin
 							ep_rx_state <= #tDLY ep_rx_s8;
+							
+							cpld_len <= #tDLY trn_rd[41:32];
+							cpld_remain_bytes <= #tDLY trn_rd[11:0];
 							
 							cpld_tlen <= #tDLY (trn_rd[41:32] == 0) ? 11'h400 : {1'b0, trn_rd[41:32]}; 
 							dma_rr_si <= #tDLY 1'b1;
@@ -684,6 +694,7 @@ begin
 				begin
 					ep_rx_state <= #tDLY ep_rx_s9;
 					
+					index <= #tDLY trn_rd[42:40];
 					cpld_dl <= #tDLY {trn_rd[7:0], trn_rd[15:8], trn_rd[23:16], trn_rd[31:24]};
 				end
 				
@@ -723,7 +734,7 @@ begin
 				
 				if ((!trn_rsrc_rdy_n) && (!trn_rdst_rdy_n))
 				begin
-					fifo_w_r[0] <= #tDLY 1'b1; //to be modified according to tags;
+					fifo_w_r[index] <= #tDLY 1'b1; //to be modified according to tags;
 					fifo_d_r <= #tDLY {trn_rd[39:32], trn_rd[47:40], trn_rd[55:48], trn_rd[63:56], cpld_dl};
 					
 					cpld_dl <= #tDLY {trn_rd[7:0], trn_rd[15:8], trn_rd[23:16], trn_rd[31:24]};
@@ -821,7 +832,73 @@ begin
 	end
 end
 
-
+always@(posedge trn_clk, negedge trn_reset_n)
+begin
+	if (!trn_reset_n)
+	begin
+		fifo_rdy_r[index] <= #tDLY { tags {1'b0} };
+	end
+	else
+	begin
+		if ((ep_rx_state == ep_rx_s9) && (cpld_len == cpld_remain_bytes[11:2]))
+		begin
+			fifo_rdy_r[index] <= #tDLY 1'b1;
+		end
+		else 
+		begin 
+//			genvar i;  
+//			generate  
+//			for (i=0; i < tags; i=i+1)  
+//			begin: gen_code_label  
+//				if (fifo_ack_pcie_ds[i] == 1'b1)
+//				begin
+//					fifo_rdy_r[i] <= #tDLY 1'b0;
+//				end  
+//			end  
+//			endgenerate  
+			if (fifo_ack_pcie_ds[0] == 1'b1)
+			begin
+				fifo_rdy_r[0] <= #tDLY 1'b0;
+			end
+			if (fifo_ack_pcie_ds[1] == 1'b1)
+			begin
+				fifo_rdy_r[1] <= #tDLY 1'b0;
+			end
+			if (fifo_ack_pcie_ds[2] == 1'b1)
+			begin
+				fifo_rdy_r[2] <= #tDLY 1'b0;
+			end
+			if (fifo_ack_pcie_ds[3] == 1'b1)
+			begin
+				fifo_rdy_r[3] <= #tDLY 1'b0;
+			end
+			if (fifo_ack_pcie_ds[4] == 1'b1)
+			begin
+				fifo_rdy_r[4] <= #tDLY 1'b0;
+			end
+			if (fifo_ack_pcie_ds[5] == 1'b1)
+			begin
+				fifo_rdy_r[5] <= #tDLY 1'b0;
+			end
+			if (fifo_ack_pcie_ds[6] == 1'b1)
+			begin
+				fifo_rdy_r[6] <= #tDLY 1'b0;
+			end
+			if (fifo_ack_pcie_ds[7] == 1'b1)
+			begin
+				fifo_rdy_r[7] <= #tDLY 1'b0;
+			end			
+		end	
+	end
+end
+//				if (cpld_len == cpld_remain_bytes[11:2])
+//				begin
+//					fifo_rdy_r[index] <= #tDLY 1'b1;
+//				end
+//				else if(fifo_ack_pcie_ds[index] == 1'b1)
+//				begin
+//					fifo_rdy_r[index] <= #tDLY 1'b0;
+//				end
 
 //---------------------------------------------------------------------
 // B0_ARB_FSM Finite State Machine(one process)
