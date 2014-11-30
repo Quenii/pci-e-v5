@@ -77,79 +77,7 @@ entity top is
 end top;
 
 architecture archi of top is
-  component ddr2_sdram_wrapper
-    port (
-      sys_rst       : in    std_logic;
-      fifo_clk      : out   std_logic;
-      fifo_wr_en    : in    std_logic;
-      fifo_wr_data  : in    std_logic_vector(63 downto 0);
-      fifo_full     : out   std_logic;
-      fifo_rd_en    : in    std_logic;
-      fifo_rd_data  : out   std_logic_vector(63 downto 0);
-      fifo_empty    : out   std_logic;
-      fifo_data_cnt : out   std_logic_vector(31 downto 0);
-      ddr2_clk      : in    std_logic;
-      idly_clk_200  : in    std_logic;
-      rdy           : out   std_logic;
-      ddr2_dq       : inout std_logic_vector(31 downto 0);
-      ddr2_a        : out   std_logic_vector(13 downto 0);
-      ddr2_ba       : out   std_logic_vector(2 downto 0);
-      ddr2_dm       : out   std_logic_vector(3 downto 0);
-      ddr2_dqs      : inout std_logic_vector(3 downto 0);
-      ddr2_dqs_n    : inout std_logic_vector(3 downto 0);
-      ddr2_ras_n    : out   std_logic;
-      ddr2_cas_n    : out   std_logic;
-      ddr2_we_n     : out   std_logic;
-      ddr2_cs_n     : out   std_logic_vector(0 downto 0);
-      ddr2_odt      : out   std_logic_vector(0 downto 0);
-      ddr2_cke      : out   std_logic_vector(0 downto 0);
-      ddr2_ck       : out   std_logic_vector(0 downto 0);
-      ddr2_ck_n     : out   std_logic_vector(0 downto 0));
-  end component;
-  component pcie_dma_top
-    port(
-      PCIE_REFCLKP           : in  std_logic;
-      PCIE_REFCLKN           : in  std_logic;
-      PERSTN                 : in  std_logic;
-      USER_LED0              : out std_logic;
-      USER_LED1              : out std_logic;
-      USER_LED2              : out std_logic;
-      pci_exp_txp            : out std_logic_vector(3 downto 0);
-      pci_exp_txn            : out std_logic_vector(3 downto 0);
-      pci_exp_rxp            : in  std_logic_vector(3 downto 0);
-      pci_exp_rxn            : in  std_logic_vector(3 downto 0);
-      pcie_trn_clk           : out std_logic;
-      fifo_wrreq_pcie_us     : in  std_logic;
-      fifo_data_pcie_us      : in  std_logic_vector(63 downto 0);
-      fifo_prog_full_pcie_us : out std_logic;
-      fifo_rdreq_pcie_ds     : in  std_logic;
-      fifo_q_pcie_ds         : out std_logic_vector(63 downto 0);
-      fifo_empty_pcie_ds     : out std_logic;
-      record_en              : out std_logic);
-  end component;
-  component clk_rst_pro
-    port (
-      rst_i      : in  std_logic;
-      clk33m_i   : in  std_logic;
-      clk_p_i    : in  std_logic;
-      clk_n_i    : in  std_logic;
-      sys_clk_o  : out std_logic;
-      clk_200m_o : out std_logic;
-      i2c_clk_o  : out std_logic;
-      sys_rst_o  : out std_logic);
-  end component;
-  component cvbs_vpif
-    port (
-      rst_i           : in  std_logic;
-      sys_clk_i       : in  std_logic;
-      cvbs_clk_i      : in  std_logic;
-      cvbs_dvo_a_i    : in  std_logic_vector(7 downto 0);
-      cvbs_dvo_b_i    : in  std_logic_vector(7 downto 0);
-      tvp5158_rst_n_o : out std_logic;
-      tvp5158_irq_i   : in  std_logic;
-      vpif_clkin0_o   : out std_logic;
-      vpif_din_o      : out std_logic_vector(15 downto 0));
-  end component;
+
   component fifo_fwft_256x16
     port (
       rst    : in  std_logic;
@@ -386,10 +314,20 @@ begin  -- archi
 
 
   cdc_fifo_rst     <= sys_rst;
-  cdc_fifo_wr_clk  <= ddr2_fifo_clk;
+  cdc_fifo_wr_clk  <= sys_clk; -- ddr2_fifo_clk;
   ddr2_fifo_rd_en  <= (not ddr2_fifo_empty) and (not cdc_fifo_full);
-  cdc_fifo_wr_en   <= ddr2_fifo_rd_en;
-  cdc_fifo_wr_data <= ddr2_fifo_rd_data;
+  cdc_fifo_wr_en   <= not cdc_fifo_full;
+--  cdc_fifo_wr_data <= ddr2_fifo_rd_data;
+  process (cdc_fifo_wr_clk, cdc_fifo_rst)
+  begin
+    if (cdc_fifo_rst = '1') then
+      cdc_fifo_wr_data <= (others => '0');
+    elsif (rising_edge(cdc_fifo_wr_clk)) then
+		if cdc_fifo_wr_en = '1' then
+			cdc_fifo_wr_data <= cdc_fifo_wr_data + '1';
+		end if;
+    end if;
+  end process;
 
   fifo_inst2 : fifo_fwft_64x64
     port map (
@@ -414,7 +352,7 @@ begin  -- archi
 
   pcie_rst_n <= not sys_rst;
 
-  pcie_dma_top_inst : pcie_dma_top
+  pcie_dma_top_inst : entity work.pcie_dma_top
     port map(
       PCIE_REFCLKP           => PCIE_REFCLKP,
       PCIE_REFCLKN           => PCIE_REFCLKN,
