@@ -103,6 +103,18 @@ architecture archi of top is
       full   : out std_logic;
       empty  : out std_logic);
   end component;
+	COMPONENT clk_40m
+	PORT(
+		CLKIN1_IN : IN std_logic;
+		RST_IN : IN std_logic;          
+		CLKFBOUT_OUT : OUT std_logic;
+		CLKOUT0_OUT : OUT std_logic;
+		CLKOUT1_OUT : OUT std_logic;
+		CLKOUT2_OUT : OUT std_logic;
+		CLKOUT3_OUT : OUT std_logic;
+		LOCKED_OUT : OUT std_logic
+		);
+	END COMPONENT;
 
   signal sys_clk  : std_logic;
   signal clk_200m : std_logic;
@@ -177,6 +189,7 @@ architecture archi of top is
   signal ofifo_full    : std_logic;
   signal ofifo_empty   : std_logic;
   signal ofifo_wr_en : std_logic;
+   signal  ofifo_rdclk : std_logic;
 begin  -- archi
 
   led_n_o(5)          <= sys_rst;
@@ -193,7 +206,16 @@ begin  -- archi
       sys_rst_o  => sys_rst
       );
 
-
+	Inst_clk_40m: clk_40m PORT MAP(
+		CLKIN1_IN => clk33m_i,
+		RST_IN => not rst_n_i,
+		CLKFBOUT_OUT => open,
+		CLKOUT0_OUT => open,
+		CLKOUT1_OUT => cdc_fifo_wr_clk,
+		CLKOUT2_OUT => open,
+		CLKOUT3_OUT => ofifo_rdclk,
+		LOCKED_OUT => open 
+	);
  -----------------------------------------------------------------------------
   -----------------------------------------------------------------------------
 
@@ -316,7 +338,7 @@ begin  -- archi
 
 
   cdc_fifo_rst     <= sys_rst;
-  cdc_fifo_wr_clk  <= clk33m_i; -- ddr2_fifo_clk;
+--  cdc_fifo_wr_clk  <= clk33m_i; -- ddr2_fifo_clk;
   ddr2_fifo_rd_en  <= (not ddr2_fifo_empty) and (not cdc_fifo_full);
   cdc_fifo_wr_en   <= not cdc_fifo_full;
 --  cdc_fifo_wr_data <= ddr2_fifo_rd_data;
@@ -381,7 +403,7 @@ begin  -- archi
       wr_clk => pcie_trn_clk,
       wr_en  => ofifo_wr_en,
       din    => fifo_q_pcie_ds,
-      rd_clk => clk33m_i,
+      rd_clk => ofifo_rdclk,
       rd_en  => not ofifo_empty,
       dout   => test_o,
       full   => ofifo_full,
