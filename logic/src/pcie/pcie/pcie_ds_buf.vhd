@@ -125,16 +125,25 @@ begin  -- impl
       fifo_ack_pcie_ds(index) <= '1';
       rd_en(index)            <= fifo_rdreq_pcie_ds;
       fifo_empty_pcie_ds      <= empty(index);
-      fifo_prog_full_pcie_ds  <= prog_full(index);
     else
       fifo_ack_pcie_ds       <= (others => '0');
       rd_en                  <= (others => '0');
       fifo_empty_pcie_ds     <= '1';
-      fifo_prog_full_pcie_ds <= '0';
     end if;
   end process;
 
   fifo_q_pcie_ds <= dout(index);
   
+  process (prog_full)
+		variable result: std_logic;
+	begin
+			result := '0';
+			for i in prog_full'range loop
+				result := result or prog_full(i);
+			end loop;
+			fifo_prog_full_pcie_ds <= result;
+	end process;
+
+--      fifo_prog_full_pcie_ds  <= prog_full(index);
 
 end impl;

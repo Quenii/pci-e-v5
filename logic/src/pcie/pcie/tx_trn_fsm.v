@@ -82,6 +82,7 @@ module tx_trn_fsm
 		output					fifo_rdreq_pcie_us,			// fifo read request
 		input		[63:0]		fifo_q_pcie_us,				// fifo read data
 		input					fifo_empty_pcie_us,			// fifo empty
+		input					fifo_prog_full_pcie_ds,			// ds fifo
 		
 		// B0 Arb
 		input					b0_cpld_rq,					//
@@ -396,7 +397,7 @@ begin
 					begin
 						ep_tx_state <= #tDLY ep_tx_s2;
 					end
-					else if (cfg_bus_master_en_r && npst_tb_av && dma_rs && (!tx_npsttlp_cpl_lev))
+					else if (cfg_bus_master_en_r && npst_tb_av && dma_rs && (!tx_npsttlp_cpl_lev) && (!fifo_prog_full_pcie_ds))
 					begin
 						ep_tx_state <= #tDLY ep_tx_s8;
 					end
@@ -598,6 +599,7 @@ begin
 					&& dma_rs 
 					&& (!tx_npsttlp_cpl_lev) 
 					&& (!dma_rabt_rq)
+					&& (!fifo_prog_full_pcie_ds)
 					)
 					begin
 						ep_tx_state <= #tDLY ep_tx_s8;
@@ -737,7 +739,7 @@ begin
 					end
 					else
 					begin
-						if (cfg_bus_master_en_r && npst_tb_av && dma_rs && (!dma_rabt_rq))
+						if (cfg_bus_master_en_r && npst_tb_av && dma_rs && (!dma_rabt_rq) && (!fifo_prog_full_pcie_ds))
 						begin
 							ep_tx_state <= #tDLY ep_tx_s8;
 						end
