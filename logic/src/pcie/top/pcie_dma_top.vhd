@@ -38,6 +38,7 @@ ENTITY pcie_dma_top IS
       fifo_wrreq_pcie_us      : IN STD_LOGIC;
       fifo_data_pcie_us       : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
       fifo_prog_full_pcie_us  : OUT STD_LOGIC;
+		fifo_overflow_pcie_ds	: out std_logic;
       fifo_rdreq_pcie_ds      : IN STD_LOGIC;
       fifo_q_pcie_ds          : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
       fifo_empty_pcie_ds      : OUT STD_LOGIC;
@@ -89,6 +90,7 @@ component pcie_wrapper IS
       fifo_data_pcie_us       : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
       fifo_prog_full_pcie_us  : OUT STD_LOGIC;
       
+		fifo_overflow_pcie_ds	: out std_logic;
       fifo_rdreq_pcie_ds      : IN STD_LOGIC;
       fifo_q_pcie_ds          : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
       fifo_empty_pcie_ds      : OUT STD_LOGIC
@@ -191,7 +193,7 @@ BEGIN
          fifo_wrreq_pcie_us      => fifo_wrreq_pcie_us,
          fifo_data_pcie_us       => fifo_data_pcie_us,
          fifo_prog_full_pcie_us  => fifo_prog_full_pcie_us_xhdl1,
-         
+         fifo_overflow_pcie_ds	=> fifo_overflow_pcie_ds,
          fifo_rdreq_pcie_ds      => fifo_rdreq_pcie_ds,
          fifo_q_pcie_ds          => fifo_q_pcie_ds_xhdl2,
          fifo_empty_pcie_ds      => fifo_empty_pcie_ds_xhdl0

@@ -240,18 +240,6 @@ begin  -- archi
   ddr2_fifo_wr_data <= dout(15 downto 0) & dout(31 downto 16) &
                        dout(47 downto 32) & dout(63 downto 48);
 
-  
-  process (clk_200m, fifo1_rst)
-  begin  -- process
-    if fifo1_rst = '1' then             -- asynchronous reset (active low)
-      led_n_o(4) <= '1';
-    elsif clk_200m'event and clk_200m = '1' then  -- rising clock edge
-      if full = '1' then
-        led_n_o(4) <= '0';
-      end if;
-    end if;
-  end process;
-
 
   -----------------------------------------------------------------------------
   -- test ddr2 sdram
@@ -390,6 +378,7 @@ begin  -- archi
       fifo_wrreq_pcie_us     => pcie_usfifo_wr_en,
       fifo_data_pcie_us      => pcie_usfifo_wr_data,
       fifo_prog_full_pcie_us => pcie_usfifo_prog_full,
+		fifo_overflow_pcie_ds  => led_n_o(4),
       fifo_rdreq_pcie_ds     => ofifo_wr_en,
       fifo_q_pcie_ds         => fifo_q_pcie_ds,
       fifo_empty_pcie_ds     => fifo_empty_pcie_ds,

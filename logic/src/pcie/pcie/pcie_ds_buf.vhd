@@ -34,6 +34,7 @@ entity pcie_ds_buf is
     trn_reset_n : in std_logic;         -- Transaction Reset; Active low
 
     -- FIFO Interface for PCI Express Downstream
+	 overflow_o : out std_logic;
     fifo_ack_pcie_ds       : out  std_logic_vector(tags-1 downto 0);  -- fifo ack
     fifo_rdy_pcie_ds       : in  std_logic_vector(tags-1 downto 0);  -- fifo rdy
     fifo_wrreq_pcie_ds     : in  std_logic_vector(tags-1 downto 0);  -- fifo write request
@@ -68,7 +69,7 @@ architecture impl of pcie_ds_buf is
   signal dout      : ARRAY_64b;
   signal prog_full : std_logic_vector(tags-1 downto 0);
   signal empty     : std_logic_vector(tags-1 downto 0);
-
+  signal full     : std_logic_vector(tags-1 downto 0);
   signal index : integer range tags-1 downto 0;
   signal state : state_t;
   
@@ -85,7 +86,7 @@ begin  -- impl
         wr_en     => fifo_wrreq_pcie_ds(i),
         rd_en     => rd_en(i),
         dout      => dout(i),
-        full      => open,
+        full      => full(i),
         empty     => empty(i),
         prog_full => prog_full(i)
         );
@@ -144,6 +145,15 @@ begin  -- impl
 			fifo_prog_full_pcie_ds <= result;
 	end process;
 
+  process (full)
+		variable result: std_logic;
+	begin
+			result := '0';
+			for i in full'range loop
+				result := result or full(i);
+			end loop;
+			overflow_o <= result;
+	end process;
 --      fifo_prog_full_pcie_ds  <= prog_full(index);
 
 end impl;

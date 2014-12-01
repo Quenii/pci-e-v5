@@ -14,7 +14,7 @@ namespace eval ::fifo_std_512x64_pf496_xmdf {
 # Optional when the use context does not require the param or ports
 # arrays to be available.
 proc ::fifo_std_512x64_pf496_xmdf::xmdfInit { instance } {
-# Variable containg name of library into which module is compiled
+# Variable containing name of library into which module is compiled
 # Recommendation: <module_name>
 # Required
 utilities_xmdf::xmdfSetData $instance Module Attributes Name fifo_std_512x64_pf496
@@ -30,8 +30,7 @@ set fcount 0
 # Examples include unisim and xilinxcorelib
 # Optional
 # In this example, we assume that the unisim library will
-# be magically
-# available to the simulation and synthesis tool
+# be available to the simulation and synthesis tool
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type logical_library
 utilities_xmdf::xmdfSetData $instance FileSet $fcount logical_library unisim
 incr fcount
@@ -50,14 +49,6 @@ incr fcount
 
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path fifo_std_512x64_pf496.sym
 utilities_xmdf::xmdfSetData $instance FileSet $fcount type symbol
-incr fcount
-
-utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path fifo_std_512x64_pf496.v
-utilities_xmdf::xmdfSetData $instance FileSet $fcount type verilog
-incr fcount
-
-utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path fifo_std_512x64_pf496.veo
-utilities_xmdf::xmdfSetData $instance FileSet $fcount type verilog_template
 incr fcount
 
 utilities_xmdf::xmdfSetData $instance FileSet $fcount relative_path fifo_std_512x64_pf496.vhd

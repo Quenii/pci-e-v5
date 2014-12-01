@@ -146,6 +146,7 @@ module pcie_dma_wrapper
 		output					fifo_prog_full_pcie_us,				// fifo programmable full
 		
 		// FIFO Interface for PCI Express Downstream
+		output 				fifo_overflow_pcie_ds,
 		input					fifo_rdreq_pcie_ds,					// fifo read request
 		output		[63:0]		fifo_q_pcie_ds,						// fifo read data
 		output					fifo_empty_pcie_ds					// fifo empty
@@ -330,6 +331,7 @@ pcie_ds_buf
 		.trn_reset_n			(sys_reset_n),
 		
 		// FIFO Interface for PCI Express Downstream
+		.overflow_o(fifo_overflow_pcie_ds),
 		.fifo_ack_pcie_ds		(fifo_ack_pcie_ds),
 		.fifo_rdy_pcie_ds		(fifo_rdy_pcie_ds),
 		.fifo_wrreq_pcie_ds		(fifo_wrreq_pcie_ds),
