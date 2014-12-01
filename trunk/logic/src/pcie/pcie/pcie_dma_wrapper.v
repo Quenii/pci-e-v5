@@ -514,7 +514,7 @@ tx_trn_fsm
 		.fifo_rdreq_pcie_us			(fifo_rdreq_pcie_us),
 		.fifo_q_pcie_us				(fifo_q_pcie_us),
 		.fifo_empty_pcie_us			(fifo_empty_pcie_us),
-		
+		.fifo_prog_full_pcie_ds	(fifo_prog_full_pcie_ds),
 		// B0 Arb
 		.b0_cpld_rq					(b0_cpld_rq),
 		.b0_cpld_ack				(b0_cpld_ack),
