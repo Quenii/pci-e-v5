@@ -452,6 +452,7 @@ UINT pcie::GetTransBlock()
 void pcie::StopDMA()
 {
 	stop=TRUE;
+	Sleep(200);
 	SetEvent(he);
 }
 
