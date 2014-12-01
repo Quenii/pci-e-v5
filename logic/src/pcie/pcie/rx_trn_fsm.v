@@ -837,7 +837,7 @@ always@(posedge trn_clk, negedge trn_reset_n)
 begin
 	if (!trn_reset_n)
 	begin
-		fifo_rdy_r[index] <= #tDLY { tags {1'b0} };
+		fifo_rdy_r <= #tDLY { tags {1'b0} };
 	end
 	else
 	begin
