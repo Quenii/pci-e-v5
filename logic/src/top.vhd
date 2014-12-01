@@ -72,7 +72,7 @@ entity top is
 --    ddr2_ck         : out   std_logic_vector(0 downto 0);
 --    ddr2_ck_n       : out   std_logic_vector(0 downto 0);
     -- LED Interface
-	 fifo_q_pcie_ds :out std_logic_vector(63 downto 0);
+	 test_o :out std_logic_vector(63 downto 0);
     led_n_o         : out   std_logic_vector(5 downto 1)
     );
 end top;
@@ -172,8 +172,11 @@ architecture archi of top is
 
   constant test_cnt_max : integer := 101;
   signal   test_cnt     : integer range 0 to test_cnt_max;
-	signal fifo_empty_pcie_ds :  std_logic;
-  
+  signal fifo_empty_pcie_ds :  std_logic;
+	signal fifo_q_pcie_ds : std_logic_vector(63 downto 0);
+  signal ofifo_full    : std_logic;
+  signal ofifo_empty   : std_logic;
+  signal ofifo_wr_en : std_logic;
 begin  -- archi
 
   led_n_o(5)          <= sys_rst;
@@ -365,11 +368,23 @@ begin  -- archi
       fifo_wrreq_pcie_us     => pcie_usfifo_wr_en,
       fifo_data_pcie_us      => pcie_usfifo_wr_data,
       fifo_prog_full_pcie_us => pcie_usfifo_prog_full,
-      fifo_rdreq_pcie_ds     => not fifo_empty_pcie_ds,
+      fifo_rdreq_pcie_ds     => ofifo_wr_en,
       fifo_q_pcie_ds         => fifo_q_pcie_ds,
       fifo_empty_pcie_ds     => fifo_empty_pcie_ds,
       record_en              => open
       );
-
-
+		
+	ofifo_wr_en <= (not fifo_empty_pcie_ds) and (not ofifo_full);
+  ofifo : fifo_fwft_64x64
+    port map (
+      rst    => cdc_fifo_rst,
+      wr_clk => pcie_trn_clk,
+      wr_en  => ofifo_wr_en,
+      din    => fifo_q_pcie_ds,
+      rd_clk => clk33m_i,
+      rd_en  => not ofifo_empty,
+      dout   => test_o,
+      full   => ofifo_full,
+      empty  => ofifo_empty
+      );
 end archi;
