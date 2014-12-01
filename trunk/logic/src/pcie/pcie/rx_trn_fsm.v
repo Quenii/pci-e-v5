@@ -38,7 +38,8 @@
 
 module rx_trn_fsm 
 	# (
-		parameter	tags		= 8,
+		parameter	tags		= 8,		//when changes tags to other value, check for 
+												//	fifo_rdy_r[0] <= #tDLY (fifo_ack_pcie_ds[0] == 1'b1) ? 1'b0 : fifo_rdy_r[0];
 		parameter	tDLY		= 0								// Simulation delay
 	)
 	
@@ -846,48 +847,14 @@ begin
 		end
 		else 
 		begin 
-//			genvar i;  
-//			generate  
-//			for (i=0; i < tags; i=i+1)  
-//			begin: gen_code_label  
-//				if (fifo_ack_pcie_ds[i] == 1'b1)
-//				begin
-//					fifo_rdy_r[i] <= #tDLY 1'b0;
-//				end  
-//			end  
-//			endgenerate  
-			if (fifo_ack_pcie_ds[0] == 1'b1)
-			begin
-				fifo_rdy_r[0] <= #tDLY 1'b0;
-			end
-			if (fifo_ack_pcie_ds[1] == 1'b1)
-			begin
-				fifo_rdy_r[1] <= #tDLY 1'b0;
-			end
-			if (fifo_ack_pcie_ds[2] == 1'b1)
-			begin
-				fifo_rdy_r[2] <= #tDLY 1'b0;
-			end
-			if (fifo_ack_pcie_ds[3] == 1'b1)
-			begin
-				fifo_rdy_r[3] <= #tDLY 1'b0;
-			end
-			if (fifo_ack_pcie_ds[4] == 1'b1)
-			begin
-				fifo_rdy_r[4] <= #tDLY 1'b0;
-			end
-			if (fifo_ack_pcie_ds[5] == 1'b1)
-			begin
-				fifo_rdy_r[5] <= #tDLY 1'b0;
-			end
-			if (fifo_ack_pcie_ds[6] == 1'b1)
-			begin
-				fifo_rdy_r[6] <= #tDLY 1'b0;
-			end
-			if (fifo_ack_pcie_ds[7] == 1'b1)
-			begin
-				fifo_rdy_r[7] <= #tDLY 1'b0;
-			end			
+			fifo_rdy_r[0] <= #tDLY (fifo_ack_pcie_ds[0] == 1'b1) ? 1'b0 : fifo_rdy_r[0];
+			fifo_rdy_r[1] <= #tDLY (fifo_ack_pcie_ds[1] == 1'b1) ? 1'b0 : fifo_rdy_r[1];
+			fifo_rdy_r[2] <= #tDLY (fifo_ack_pcie_ds[2] == 1'b1) ? 1'b0 : fifo_rdy_r[2];
+			fifo_rdy_r[3] <= #tDLY (fifo_ack_pcie_ds[3] == 1'b1) ? 1'b0 : fifo_rdy_r[3];
+			fifo_rdy_r[4] <= #tDLY (fifo_ack_pcie_ds[4] == 1'b1) ? 1'b0 : fifo_rdy_r[4];
+			fifo_rdy_r[5] <= #tDLY (fifo_ack_pcie_ds[5] == 1'b1) ? 1'b0 : fifo_rdy_r[5];
+			fifo_rdy_r[6] <= #tDLY (fifo_ack_pcie_ds[6] == 1'b1) ? 1'b0 : fifo_rdy_r[6];
+			fifo_rdy_r[7] <= #tDLY (fifo_ack_pcie_ds[7] == 1'b1) ? 1'b0 : fifo_rdy_r[7];
 		end	
 	end
 end
