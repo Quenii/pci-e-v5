@@ -365,7 +365,7 @@ begin  -- archi
       fifo_wrreq_pcie_us     => pcie_usfifo_wr_en,
       fifo_data_pcie_us      => pcie_usfifo_wr_data,
       fifo_prog_full_pcie_us => pcie_usfifo_prog_full,
-      fifo_rdreq_pcie_ds     => fifo_empty_pcie_ds,
+      fifo_rdreq_pcie_ds     => not fifo_empty_pcie_ds,
       fifo_q_pcie_ds         => fifo_q_pcie_ds,
       fifo_empty_pcie_ds     => fifo_empty_pcie_ds,
       record_en              => open
