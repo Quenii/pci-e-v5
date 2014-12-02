@@ -1,0 +1,211 @@
+
+CORE Generator Options:
+   Target Device                  : xc5vlx110t-ff1136
+   Speed Grade                    : -1
+   HDL                            : vhdl
+   Synthesis Tool                 : ISE
+
+MIG Output Options:
+   Module Name                    : ddr2_16bx2_mig361
+   No of Controllers              : 2
+   Selected Compatible Device(s)  : --
+   Hardware Test Bench           : enabled
+   PPC440                         : --
+   PowerPC440 Block Selection     : --
+
+FPGA Options:
+   PLL                            : enabled
+   Debug Signals                  : C0 - DDR2_SDRAM
+   System Clock                   : Single-Ended
+   Limit to 2 Bytes per Bank      : disabled
+
+Extended FPGA Options:
+   DCI for DQ/DQS                 : enabled
+   DCI for Address/Control        : disabled
+   Class for Address and Control  : Class II
+
+Reserve Pins:
+   --
+    
+   /*******************************************************/
+   /*                  Controller 0                       */
+   /*******************************************************/
+   Controller Options :
+      Memory                         : DDR2_SDRAM
+      Design Clock Frequency         : 5000 ps(200.00 MHz)
+      Memory Type                    : Components
+      Memory Part                    : MT47H128M16XX-3
+      Equivalent Part(s)             : MT47H128M16HG-3
+      Data Width                     : 16
+      Memory Depth                   : 1
+      ECC                            : ECC Disabled
+      Data Mask                      : enabled
+
+   Memory Options:
+      Burst Length (MR[2:0])         : 4(010)
+      Burst Type (MR[3])             : sequential(0)
+      CAS Latency (MR[6:4])          : 3(011)
+      Output Drive Strength (EMR[1]) : Fullstrength(0)
+      RTT (nominal) - ODT (EMR[6,2]) : 75ohms(01)
+      Additive Latency (EMR[5:3])    : 0(000)
+
+   FPGA Options:
+      IODELAY Performance Mode       : HIGH
+
+   Selected Banks and Pins usage : 
+       Data          :bank 11(38) -> Number of pins used : 25 
+                      
+       Address/Control:bank 11(38) -> Number of pins used : 11 
+                      bank 15(38) -> Number of pins used : 8 
+                      
+       System Control:bank 20(38) -> Number of pins used : 2 
+                      bank 5(38) -> Number of pins used : 1 
+                      
+       System Clock  :bank 3(19) -> Number of pins used : 2 
+                      
+       Total IOs used :    49
+
+Pin Selections:
+
+	SignalName   		PinName
+	ddr2_a[0]   	->	H30
+	ddr2_a[10]   	->	R31
+	ddr2_a[11]   	->	M32
+	ddr2_a[12]   	->	U33
+	ddr2_a[13]   	->	M31
+	ddr2_a[1]   	->	P31
+	ddr2_a[2]   	->	J31
+	ddr2_a[3]   	->	T31
+	ddr2_a[4]   	->	K32
+	ddr2_a[5]   	->	U31
+	ddr2_a[6]   	->	K31
+	ddr2_a[7]   	->	T33
+	ddr2_a[8]   	->	L31
+	ddr2_a[9]   	->	U32
+	ddr2_ba[0]   	->	R34
+	ddr2_ba[1]   	->	P32
+	ddr2_ba[2]   	->	T34
+	ddr2_cas#   	->	G31
+	ddr2_ck#[0]   	->	R32
+	ddr2_ck[0]   	->	R33
+	ddr2_cke[0]   	->	P34
+	ddr2_cs#[0]   	->	F31
+	ddr2_dm[0]   	->	F33
+	ddr2_dm[1]   	->	E32
+	ddr2_dq[0]   	->	D34
+	ddr2_dq[10]   	->	D32
+	ddr2_dq[11]   	->	E33
+	ddr2_dq[12]   	->	L33
+	ddr2_dq[13]   	->	C33
+	ddr2_dq[14]   	->	K33
+	ddr2_dq[15]   	->	C34
+	ddr2_dq[1]   	->	G33
+	ddr2_dq[2]   	->	E34
+	ddr2_dq[3]   	->	F34
+	ddr2_dq[4]   	->	J34
+	ddr2_dq[5]   	->	A33
+	ddr2_dq[6]   	->	H34
+	ddr2_dq[7]   	->	B33
+	ddr2_dq[8]   	->	C32
+	ddr2_dq[9]   	->	G32
+	ddr2_dqs#[0]   	->	K34
+	ddr2_dqs#[1]   	->	H33
+	ddr2_dqs[0]   	->	L34
+	ddr2_dqs[1]   	->	J32
+	ddr2_odt[0]   	->	B32
+	ddr2_ras#   	->	E31
+	ddr2_we#   	->	N32
+	error   	->	A14
+	idly_clk_200   	->	G15
+	phy_init_done   	->	B12
+	sys_clk   	->	H17
+	sys_rst_n   	->	A13
+
+   /*******************************************************/
+   /*                  Controller 1                       */
+   /*******************************************************/
+   Controller Options :
+      Memory                         : DDR2_SDRAM
+      Design Clock Frequency         : 5000 ps(200.00 MHz)
+      Memory Type                    : Components
+      Memory Part                    : MT47H128M16XX-3
+      Equivalent Part(s)             : MT47H128M16HG-3
+      Data Width                     : 16
+      Memory Depth                   : 1
+      ECC                            : ECC Disabled
+      Data Mask                      : enabled
+
+   Memory Options:
+      Burst Length (MR[2:0])         : 4(010)
+      Burst Type (MR[3])             : sequential(0)
+      CAS Latency (MR[6:4])          : 3(011)
+      Output Drive Strength (EMR[1]) : Fullstrength(0)
+      RTT (nominal) - ODT (EMR[6,2]) : 75ohms(01)
+      Additive Latency (EMR[5:3])    : 0(000)
+
+   FPGA Options:
+      IODELAY Performance Mode       : HIGH
+
+   Selected Banks and Pins usage : 
+       Data          :bank 13(38) -> Number of pins used : 26 
+                      
+       Address/Control:bank 13(38) -> Number of pins used : 10 
+                      bank 17(38) -> Number of pins used : 9 
+                      
+       System Control:bank 23(38) -> Number of pins used : 2 
+                      
+       System Clock  :
+       Total IOs used :    47
+
+Pin Selections:
+
+	SignalName   		PinName
+	ddr2_a[0]   	->	AA33
+	ddr2_a[10]   	->	AF30
+	ddr2_a[11]   	->	Y32
+	ddr2_a[12]   	->	AC33
+	ddr2_a[13]   	->	V33
+	ddr2_a[1]   	->	AF31
+	ddr2_a[2]   	->	AB31
+	ddr2_a[3]   	->	AD30
+	ddr2_a[4]   	->	Y33
+	ddr2_a[5]   	->	AD32
+	ddr2_a[6]   	->	AA31
+	ddr2_a[7]   	->	AC32
+	ddr2_a[8]   	->	V32
+	ddr2_a[9]   	->	AC30
+	ddr2_ba[0]   	->	AG30
+	ddr2_ba[1]   	->	AJ30
+	ddr2_ba[2]   	->	AK31
+	ddr2_cas#   	->	AB32
+	ddr2_ck#[0]   	->	Y34
+	ddr2_ck[0]   	->	AA34
+	ddr2_cke[0]   	->	AJ31
+	ddr2_cs#[0]   	->	V34
+	ddr2_dm[0]   	->	AL33
+	ddr2_dm[1]   	->	AM33
+	ddr2_dq[0]   	->	AF33
+	ddr2_dq[10]   	->	AJ32
+	ddr2_dq[11]   	->	AK32
+	ddr2_dq[12]   	->	AN32
+	ddr2_dq[13]   	->	AE33
+	ddr2_dq[14]   	->	AP32
+	ddr2_dq[15]   	->	AE32
+	ddr2_dq[1]   	->	AL34
+	ddr2_dq[2]   	->	AK34
+	ddr2_dq[3]   	->	AK33
+	ddr2_dq[4]   	->	AN34
+	ddr2_dq[5]   	->	AC34
+	ddr2_dq[6]   	->	AN33
+	ddr2_dq[7]   	->	AD34
+	ddr2_dq[8]   	->	AG32
+	ddr2_dq[9]   	->	AM32
+	ddr2_dqs#[0]   	->	AJ34
+	ddr2_dqs#[1]   	->	AE34
+	ddr2_dqs[0]   	->	AH34
+	ddr2_dqs[1]   	->	AF34
+	ddr2_odt[0]   	->	W34
+	ddr2_ras#   	->	AB33
+	ddr2_we#   	->	AH30
+	error   	->	A21
+	phy_init_done   	->	A23
