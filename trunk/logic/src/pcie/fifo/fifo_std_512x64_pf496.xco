@@ -1,7 +1,7 @@
 ##############################################################
 #
 # Xilinx Core Generator version 14.7
-# Date: Mon Dec 01 09:27:48 2014
+# Date: Mon Dec 01 10:27:38 2014
 #
 ##############################################################
 #
@@ -53,8 +53,8 @@ CSET enable_int_clk=false
 CSET enable_reset_synchronization=true
 CSET fifo_implementation=Common_Clock_Block_RAM
 CSET full_flags_reset_value=0
-CSET full_threshold_assert_value=384
-CSET full_threshold_negate_value=383
+CSET full_threshold_assert_value=368
+CSET full_threshold_negate_value=367
 CSET inject_dbit_error=false
 CSET inject_sbit_error=false
 CSET input_data_width=64
@@ -88,4 +88,4 @@ CSET write_data_count_width=9
 MISC pkg_timestamp=2013-10-13T18:46:09Z
 # END Extra information
 GENERATE
-# CRC:  538c345
+# CRC: b6c4cb4d
