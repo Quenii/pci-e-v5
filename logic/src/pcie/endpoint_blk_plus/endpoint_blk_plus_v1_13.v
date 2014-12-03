@@ -48,7 +48,7 @@
 `timescale 1ns/1ns
 
 module endpoint_blk_plus_v1_13 # ( 
-  parameter        C_XDEVICE = "xc5vlx50t",
+  parameter        C_XDEVICE = "xc5vlx110t",
   parameter        USE_V5FXT = 0,
   parameter        PCI_EXP_LINK_WIDTH = 4,
   parameter        PCI_EXP_INT_FREQ = 1,
