@@ -1,8 +1,0 @@
-INTSTYLE=ise
-INFILE=E:\Projects\cgs-pcie\v2\gkhy\GH5007_video_sample\top.ncd
-OUTFILE=E:\Projects\cgs-pcie\v2\gkhy\GH5007_video_sample\top.bit
-FAMILY=Virtex5
-PART=xc5vlx110t-1ff1136
-WORKINGDIR=E:\Projects\cgs-pcie\v2\gkhy\GH5007_video_sample
-LICENSE=ISE
-USER_INFO=135256_15690819_173552794_661
