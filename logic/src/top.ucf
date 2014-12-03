@@ -39,7 +39,7 @@ TIMESPEC "TS_clk100m" = PERIOD "clk100m" 100 MHz HIGH 50%;
 
 NET  "PCIE_REFCLKP"       LOC = "P4"  ;
 NET  "PCIE_REFCLKN"       LOC = "P3"  ;
-INST "pcie_dma_top_inst/clk_rst_wrapper_inst/pcie_refclk_ibuf"   DIFF_TERM = "TRUE" ;
+INST "clk_rst_inst/pcie_refclk_ibuf"   DIFF_TERM = "TRUE" ;
 
 # PCIe Lanes 0, 1
 INST "pcie_dma_top_inst/pcie_wrapper_inst/ep/pcie_ep0/pcie_blk/SIO/.pcie_gt_wrapper_i/GTD[0].GT_i" LOC = GTP_DUAL_X0Y4;

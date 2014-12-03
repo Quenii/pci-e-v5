@@ -84,8 +84,7 @@ component pcie_dma_top IS
    );
    PORT (
       
-      PCIE_REFCLKP            : IN STD_LOGIC;
-      PCIE_REFCLKN            : IN STD_LOGIC;
+      PCIE_REFCLK            : IN STD_LOGIC;
       PERSTN                  : IN STD_LOGIC;
       
       USER_LED               : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -148,6 +147,7 @@ END component;
   signal clk_200m : std_logic;
   signal i2c_clk  : std_logic;
   signal sys_rst  : std_logic;
+  signal pcie_refclk          : std_logic;
 
   signal fifo1_rst : std_logic;
   signal wr_clk    : std_logic;
@@ -228,6 +228,9 @@ begin  -- archi
       clk33m_i   => clk33m_i,
       clk_p_i    => fpga_refclk_p,
       clk_n_i    => fpga_refclk_n,
+      PCIE_REFCLKP           => PCIE_REFCLKP,
+      PCIE_REFCLKN           => PCIE_REFCLKN,
+		PCIE_REFCLK_o => PCIE_REFCLK,
       sys_clk_o  => sys_clk,            -- 40MHz
       clk_200m_o => clk_200m,           -- 200MHz
       i2c_clk_o  => i2c_clk,            -- 1MHz
@@ -394,8 +397,7 @@ begin  -- archi
 
   pcie_dma_top_inst : pcie_dma_top
     port map(
-      PCIE_REFCLKP           => PCIE_REFCLKP,
-      PCIE_REFCLKN           => PCIE_REFCLKN,
+      PCIE_REFCLK           => PCIE_REFCLK,
       pci_exp_txp            => pci_exp_txp,
       pci_exp_txn            => pci_exp_txn,
       pci_exp_rxp            => pci_exp_rxp,

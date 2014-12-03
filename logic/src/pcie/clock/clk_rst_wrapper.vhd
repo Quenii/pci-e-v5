@@ -20,15 +20,15 @@ use UNISIM.Vcomponents.all;
 
 ENTITY clk_rst_wrapper IS
    PORT (
-      PCIE_REFCLKP      : IN STD_LOGIC;
-      PCIE_REFCLKN      : IN STD_LOGIC;
+--      PCIE_REFCLKP      : IN STD_LOGIC;
+--      PCIE_REFCLKN      : IN STD_LOGIC;
       PERSTN            : IN STD_LOGIC;
       
       sw_reset_n        : IN STD_LOGIC;
       
       pcie_trn_reset_n  : IN STD_LOGIC;
       
-      pcie_refclk       : OUT STD_LOGIC;
+--      pcie_refclk       : OUT STD_LOGIC;
       
       hw_reset_n        : OUT STD_LOGIC;
       sys_reset_n       : OUT STD_LOGIC
@@ -41,19 +41,19 @@ ARCHITECTURE trans OF clk_rst_wrapper IS
    SIGNAL pcie_refclk_xhdl0 : STD_LOGIC;
 BEGIN
    -- Drive referenced outputs
-   pcie_refclk <= pcie_refclk_xhdl0;
+--   pcie_refclk <= PCIE_REFCLK_I;
    
    hw_reset_n <= PERSTN;
    sys_reset_n <= (PERSTN AND sw_reset_n AND pcie_trn_reset_n );
    
-   
-   
-   pcie_refclk_ibuf : IBUFDS
-      PORT MAP (
-         o   => pcie_refclk_xhdl0,
-         i   => PCIE_REFCLKP,
-         ib  => PCIE_REFCLKN
-      );
+--   
+--   
+--   pcie_refclk_ibuf : IBUFDS
+--      PORT MAP (
+--         o   => pcie_refclk_xhdl0,
+--         i   => PCIE_REFCLKP,
+--         ib  => PCIE_REFCLKN
+--      );
    
 END ARCHITECTURE trans;
 

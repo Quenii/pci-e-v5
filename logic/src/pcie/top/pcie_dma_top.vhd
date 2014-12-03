@@ -13,193 +13,194 @@
 --
 ----------------------------------------------------------------------------------------------
 
-LIBRARY ieee;
-   USE ieee.std_logic_1164.all;
+library ieee;
+use ieee.std_logic_1164.all;
 
 
-ENTITY pcie_dma_top IS
-   GENERIC (
-      tDLY                    : INTEGER := 0
-   );
-   PORT (
-      
-      PCIE_REFCLKP            : IN STD_LOGIC;
-      PCIE_REFCLKN            : IN STD_LOGIC;
-      PERSTN                  : IN STD_LOGIC;
-      
-      USER_LED               : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
-      
-      pci_exp_txp             : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-      pci_exp_txn             : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-      pci_exp_rxp             : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-      pci_exp_rxn             : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-      
-      pcie_trn_clk            : OUT STD_LOGIC;
-      fifo_wrreq_pcie_us      : IN STD_LOGIC;
-      fifo_data_pcie_us       : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
-      fifo_prog_full_pcie_us  : OUT STD_LOGIC;
-		fifo_overflow_pcie_ds	: out std_logic;
-      fifo_rdreq_pcie_ds      : IN STD_LOGIC;
-      fifo_q_pcie_ds          : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
-      fifo_empty_pcie_ds      : OUT STD_LOGIC;
-      
-      record_en               : OUT STD_LOGIC
-   );
-END ENTITY pcie_dma_top;
+entity pcie_dma_top is
+  generic (
+    tDLY : integer := 0
+    );
+  port (
 
-ARCHITECTURE trans OF pcie_dma_top IS
- 
-component pcie_wrapper IS
-   GENERIC (
-      tDLY                    : INTEGER := 0
-   );
-   PORT (
-      
-      pcie_refclk             : IN STD_LOGIC;
-      pcie_us_clk             : IN STD_LOGIC;
-      pcie_ds_clk             : IN STD_LOGIC;
-      perstn                  : IN STD_LOGIC;
-      sys_reset_n             : IN STD_LOGIC;
-      pcie_trn_clk            : OUT STD_LOGIC;
-      pcie_trn_reset_n        : OUT STD_LOGIC;
-      trn_lnk_up_n            : OUT STD_LOGIC;
-      
-      pci_exp_txp             : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-      pci_exp_txn             : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-      pci_exp_rxp             : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-      pci_exp_rxn             : IN STD_LOGIC_VECTOR(3 DOWNTO 0);
-      
-      b1_w32_w                : OUT STD_LOGIC;
-      b1_w32_be               : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-      b1_w32_d                : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-      b1_w32_a                : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-      b1_r32_r                : OUT STD_LOGIC;
-      b1_r32_be               : OUT STD_LOGIC_VECTOR(3 DOWNTO 0);
-      b1_r32_a                : OUT STD_LOGIC_VECTOR(31 DOWNTO 0);
-      b1_r32_q                : IN STD_LOGIC_VECTOR(31 DOWNTO 0);
-      
-      sim_error               : IN STD_LOGIC;
-      
-      sw_reset_n              : OUT STD_LOGIC;
-      
-      record_en               : OUT STD_LOGIC;
-      play_en                 : OUT STD_LOGIC;
-      sim_en                  : OUT STD_LOGIC;
-      
-      fifo_wrreq_pcie_us      : IN STD_LOGIC;
-      fifo_data_pcie_us       : IN STD_LOGIC_VECTOR(63 DOWNTO 0);
-      fifo_prog_full_pcie_us  : OUT STD_LOGIC;
-      
-		fifo_overflow_pcie_ds	: out std_logic;
-      fifo_rdreq_pcie_ds      : IN STD_LOGIC;
-      fifo_q_pcie_ds          : OUT STD_LOGIC_VECTOR(63 DOWNTO 0);
-      fifo_empty_pcie_ds      : OUT STD_LOGIC
-   );
-END component;
- 
-   SIGNAL hw_reset_n                   : STD_LOGIC;
-   SIGNAL sys_reset_n                  : STD_LOGIC;
-   
-   SIGNAL pcie_refclk                  : STD_LOGIC;
-   SIGNAL pcie_trn_reset_n             : STD_LOGIC;
-   SIGNAL trn_lnk_up_n                 : STD_LOGIC;
-   
-   SIGNAL sim_error                    : STD_LOGIC;
-   
-   SIGNAL sw_reset_n                   : STD_LOGIC;
-   
-   SIGNAL play_en                      : STD_LOGIC;
-   SIGNAL sim_en                       : STD_LOGIC;
-   
-   -- Declare intermediate signals for referenced outputs
-   SIGNAL pci_exp_txp_xhdl4            : STD_LOGIC_VECTOR(3 DOWNTO 0);
-   SIGNAL pci_exp_txn_xhdl3            : STD_LOGIC_VECTOR(3 DOWNTO 0);
-   SIGNAL pcie_trn_clk_xhdl5           : STD_LOGIC;
-   SIGNAL fifo_prog_full_pcie_us_xhdl1 : STD_LOGIC;
-   SIGNAL fifo_q_pcie_ds_xhdl2         : STD_LOGIC_VECTOR(63 DOWNTO 0);
-   SIGNAL fifo_empty_pcie_ds_xhdl0     : STD_LOGIC;
-   SIGNAL record_en_xhdl6              : STD_LOGIC;
-BEGIN
-   -- Drive referenced outputs
-   pci_exp_txp <= pci_exp_txp_xhdl4;
-   pci_exp_txn <= pci_exp_txn_xhdl3;
-   pcie_trn_clk <= pcie_trn_clk_xhdl5;
-   fifo_prog_full_pcie_us <= fifo_prog_full_pcie_us_xhdl1;
-   fifo_q_pcie_ds <= fifo_q_pcie_ds_xhdl2;
-   fifo_empty_pcie_ds <= fifo_empty_pcie_ds_xhdl0;
-   record_en <= record_en_xhdl6;
-   
-   USER_LED(0) <= trn_lnk_up_n;
-   
-   USER_LED(1) <= (NOT((record_en_xhdl6 OR play_en)));
-   
-   USER_LED(2) <= NOT(sim_error);
-   
-   
-   
-   clk_rst_wrapper_inst : entity work.clk_rst_wrapper
-      PORT MAP (
-         pcie_refclkp      => PCIE_REFCLKP,
-         pcie_refclkn      => PCIE_REFCLKN,
-         perstn            => PERSTN,
-         
-         sw_reset_n        => sw_reset_n,
-         
-         pcie_trn_reset_n  => pcie_trn_reset_n,
-         
-         pcie_refclk       => pcie_refclk,
-         
-         hw_reset_n        => hw_reset_n,
-         sys_reset_n       => sys_reset_n
+--      PCIE_REFCLKP            : IN STD_LOGIC;
+--      PCIE_REFCLKN            : IN STD_LOGIC;
+    pcie_refclk : in std_logic;
+    PERSTN      : in std_logic;
+
+    USER_LED : out std_logic_vector(2 downto 0);
+
+    pci_exp_txp : out std_logic_vector(3 downto 0);
+    pci_exp_txn : out std_logic_vector(3 downto 0);
+    pci_exp_rxp : in  std_logic_vector(3 downto 0);
+    pci_exp_rxn : in  std_logic_vector(3 downto 0);
+
+    pcie_trn_clk           : out std_logic;
+    fifo_wrreq_pcie_us     : in  std_logic;
+    fifo_data_pcie_us      : in  std_logic_vector(63 downto 0);
+    fifo_prog_full_pcie_us : out std_logic; 
+    fifo_overflow_pcie_ds  : out std_logic;
+    fifo_rdreq_pcie_ds     : in  std_logic;
+    fifo_q_pcie_ds         : out std_logic_vector(63 downto 0);
+    fifo_empty_pcie_ds     : out std_logic;
+
+    record_en : out std_logic
+    );
+end entity pcie_dma_top;
+
+architecture trans of pcie_dma_top is
+  
+  component pcie_wrapper is
+    generic (
+      tDLY : integer := 0
       );
-   
-   
-   
-   pcie_wrapper_inst : pcie_wrapper
-      GENERIC MAP (
-         tdly  => (tDLY)
+    port (
+
+      pcie_refclk      : in  std_logic;
+      pcie_us_clk      : in  std_logic;
+      pcie_ds_clk      : in  std_logic;
+      perstn           : in  std_logic;
+      sys_reset_n      : in  std_logic;
+      pcie_trn_clk     : out std_logic;
+      pcie_trn_reset_n : out std_logic;
+      trn_lnk_up_n     : out std_logic;
+
+      pci_exp_txp : out std_logic_vector(3 downto 0);
+      pci_exp_txn : out std_logic_vector(3 downto 0);
+      pci_exp_rxp : in  std_logic_vector(3 downto 0);
+      pci_exp_rxn : in  std_logic_vector(3 downto 0);
+
+      b1_w32_w  : out std_logic;
+      b1_w32_be : out std_logic_vector(3 downto 0);
+      b1_w32_d  : out std_logic_vector(31 downto 0);
+      b1_w32_a  : out std_logic_vector(31 downto 0);
+      b1_r32_r  : out std_logic;
+      b1_r32_be : out std_logic_vector(3 downto 0);
+      b1_r32_a  : out std_logic_vector(31 downto 0);
+      b1_r32_q  : in  std_logic_vector(31 downto 0);
+
+      sim_error : in std_logic;
+
+      sw_reset_n : out std_logic;
+
+      record_en : out std_logic;
+      play_en   : out std_logic;
+      sim_en    : out std_logic;
+
+      fifo_wrreq_pcie_us     : in  std_logic;
+      fifo_data_pcie_us      : in  std_logic_vector(63 downto 0);
+      fifo_prog_full_pcie_us : out std_logic;
+      
+      fifo_overflow_pcie_ds  : out std_logic;
+      fifo_rdreq_pcie_ds     : in  std_logic;
+      fifo_q_pcie_ds         : out std_logic_vector(63 downto 0);
+      fifo_empty_pcie_ds     : out std_logic
+      );
+  end component; 
+    
+    signal hw_reset_n : std_logic;
+  signal sys_reset_n : std_logic;
+
+--   SIGNAL pcie_refclk                  : STD_LOGIC;
+  signal pcie_trn_reset_n : std_logic;
+  signal trn_lnk_up_n     : std_logic;
+
+  signal sim_error : std_logic;
+
+  signal sw_reset_n : std_logic;
+
+  signal play_en : std_logic;
+  signal sim_en  : std_logic;
+
+  -- Declare intermediate signals for referenced outputs
+  signal pci_exp_txp_xhdl4            : std_logic_vector(3 downto 0);
+  signal pci_exp_txn_xhdl3            : std_logic_vector(3 downto 0);
+  signal pcie_trn_clk_xhdl5           : std_logic;
+  signal fifo_prog_full_pcie_us_xhdl1 : std_logic;
+  signal fifo_q_pcie_ds_xhdl2         : std_logic_vector(63 downto 0);
+  signal fifo_empty_pcie_ds_xhdl0     : std_logic;
+  signal record_en_xhdl6              : std_logic;
+begin
+  -- Drive referenced outputs
+  pci_exp_txp            <= pci_exp_txp_xhdl4;
+  pci_exp_txn            <= pci_exp_txn_xhdl3;
+  pcie_trn_clk           <= pcie_trn_clk_xhdl5;
+  fifo_prog_full_pcie_us <= fifo_prog_full_pcie_us_xhdl1;
+  fifo_q_pcie_ds         <= fifo_q_pcie_ds_xhdl2;
+  fifo_empty_pcie_ds     <= fifo_empty_pcie_ds_xhdl0;
+  record_en              <= record_en_xhdl6;
+
+  USER_LED(0) <= trn_lnk_up_n;
+
+  USER_LED(1) <= (not((record_en_xhdl6 or play_en)));
+
+  USER_LED(2) <= not(sim_error);
+
+
+
+  clk_rst_wrapper_inst : entity work.clk_rst_wrapper
+    port map (
+--         pcie_refclkp      => PCIE_REFCLKP,
+--         pcie_refclkn      => PCIE_REFCLKN,
+      perstn => PERSTN,
+
+      sw_reset_n => sw_reset_n,
+
+      pcie_trn_reset_n => pcie_trn_reset_n,
+
+--         pcie_refclk       => pcie_refclk,
+
+      hw_reset_n  => hw_reset_n,
+      sys_reset_n => sys_reset_n
+      );
+
+
+
+  pcie_wrapper_inst : pcie_wrapper
+    generic map (
+      tdly => (tDLY)
       )
-      PORT MAP (
-         pcie_refclk             => pcie_refclk,
-         pcie_us_clk             => pcie_trn_clk_xhdl5,
-         pcie_ds_clk             => pcie_trn_clk_xhdl5,
-         perstn                  => PERSTN,
-         sys_reset_n             => sys_reset_n,
-         pcie_trn_clk            => pcie_trn_clk_xhdl5,
-         pcie_trn_reset_n        => pcie_trn_reset_n,
-         trn_lnk_up_n            => trn_lnk_up_n,
-         
-         pci_exp_txp             => pci_exp_txp_xhdl4,
-         pci_exp_txn             => pci_exp_txn_xhdl3,
-         pci_exp_rxp             => pci_exp_rxp,
-         pci_exp_rxn             => pci_exp_rxn,
-         b1_w32_w                => open,
-         b1_w32_be               => open,
-         b1_w32_d                => open,
-         b1_w32_a                => open,
-         b1_r32_r                => open,
-         b1_r32_be               => open,
-         b1_r32_a                => open,
-         b1_r32_q                => "00000000000000000000000000000000",
-         
-         sim_error               => sim_error,
-         
-         sw_reset_n              => sw_reset_n,
-         
-         record_en               => record_en_xhdl6,
-         play_en                 => play_en,
-         sim_en                  => sim_en,
-         
-         fifo_wrreq_pcie_us      => fifo_wrreq_pcie_us,
-         fifo_data_pcie_us       => fifo_data_pcie_us,
-         fifo_prog_full_pcie_us  => fifo_prog_full_pcie_us_xhdl1,
-         fifo_overflow_pcie_ds	=> fifo_overflow_pcie_ds,
-         fifo_rdreq_pcie_ds      => fifo_rdreq_pcie_ds,
-         fifo_q_pcie_ds          => fifo_q_pcie_ds_xhdl2,
-         fifo_empty_pcie_ds      => fifo_empty_pcie_ds_xhdl0
+    port map (
+      pcie_refclk      => pcie_refclk,
+      pcie_us_clk      => pcie_trn_clk_xhdl5,
+      pcie_ds_clk      => pcie_trn_clk_xhdl5,
+      perstn           => PERSTN,
+      sys_reset_n      => sys_reset_n,
+      pcie_trn_clk     => pcie_trn_clk_xhdl5,
+      pcie_trn_reset_n => pcie_trn_reset_n,
+      trn_lnk_up_n     => trn_lnk_up_n,
+
+      pci_exp_txp => pci_exp_txp_xhdl4,
+      pci_exp_txn => pci_exp_txn_xhdl3,
+      pci_exp_rxp => pci_exp_rxp,
+      pci_exp_rxn => pci_exp_rxn,
+      b1_w32_w    => open,
+      b1_w32_be   => open,
+      b1_w32_d    => open,
+      b1_w32_a    => open,
+      b1_r32_r    => open,
+      b1_r32_be   => open,
+      b1_r32_a    => open,
+      b1_r32_q    => "00000000000000000000000000000000",
+
+      sim_error => sim_error,
+
+      sw_reset_n => sw_reset_n,
+
+      record_en => record_en_xhdl6,
+      play_en   => play_en,
+      sim_en    => sim_en,
+
+      fifo_wrreq_pcie_us     => fifo_wrreq_pcie_us,
+      fifo_data_pcie_us      => fifo_data_pcie_us,
+      fifo_prog_full_pcie_us => fifo_prog_full_pcie_us_xhdl1,
+      fifo_overflow_pcie_ds  => fifo_overflow_pcie_ds,
+      fifo_rdreq_pcie_ds     => fifo_rdreq_pcie_ds,
+      fifo_q_pcie_ds         => fifo_q_pcie_ds_xhdl2,
+      fifo_empty_pcie_ds     => fifo_empty_pcie_ds_xhdl0
       );
-   
-END ARCHITECTURE trans;
+
+end architecture trans;
 
 
 
