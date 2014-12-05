@@ -22,9 +22,10 @@ ENTITY pcie_dma_top IS
       tDLY                    : INTEGER := 0
    );
    PORT (
+      PCIE_REFCLK            : IN STD_LOGIC;
       
-      PCIE_REFCLKP            : IN STD_LOGIC;
-      PCIE_REFCLKN            : IN STD_LOGIC;
+--      PCIE_REFCLKP            : IN STD_LOGIC;
+--      PCIE_REFCLKN            : IN STD_LOGIC;
       PERSTN                  : IN STD_LOGIC;
       
       USER_LED               : OUT STD_LOGIC_VECTOR(2 DOWNTO 0);
@@ -100,7 +101,7 @@ END component;
    SIGNAL hw_reset_n                   : STD_LOGIC;
    SIGNAL sys_reset_n                  : STD_LOGIC;
    
-   SIGNAL pcie_refclk                  : STD_LOGIC;
+--   SIGNAL pcie_refclk                  : STD_LOGIC;
    SIGNAL pcie_trn_reset_n             : STD_LOGIC;
    SIGNAL trn_lnk_up_n                 : STD_LOGIC;
    
@@ -123,7 +124,7 @@ BEGIN
    -- Drive referenced outputs
    pci_exp_txp <= pci_exp_txp_xhdl4;
    pci_exp_txn <= pci_exp_txn_xhdl3;
-   pcie_trn_clk <= pcie_trn_clk_xhdl5;
+--   pcie_trn_clk <= pcie_trn_clk_xhdl5;
    fifo_prog_full_pcie_us <= fifo_prog_full_pcie_us_xhdl1;
    fifo_q_pcie_ds <= fifo_q_pcie_ds_xhdl2;
    fifo_empty_pcie_ds <= fifo_empty_pcie_ds_xhdl0;
@@ -139,15 +140,15 @@ BEGIN
    
    clk_rst_wrapper_inst : entity work.clk_rst_wrapper
       PORT MAP (
-         pcie_refclkp      => PCIE_REFCLKP,
-         pcie_refclkn      => PCIE_REFCLKN,
+--         pcie_refclkp      => PCIE_REFCLKP,
+--         pcie_refclkn      => PCIE_REFCLKN,
          perstn            => PERSTN,
          
          sw_reset_n        => sw_reset_n,
          
          pcie_trn_reset_n  => pcie_trn_reset_n,
          
-         pcie_refclk       => pcie_refclk,
+--         pcie_refclk       => pcie_refclk,
          
          hw_reset_n        => hw_reset_n,
          sys_reset_n       => sys_reset_n
