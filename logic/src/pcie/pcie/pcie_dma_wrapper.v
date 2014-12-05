@@ -304,8 +304,9 @@ rx_trn_fsm
 		// FIFO Interface for PCI Express Downstream
 		.fifo_ack_pcie_ds				(fifo_ack_pcie_ds),
 		.fifo_rdy_pcie_ds				(fifo_rdy_pcie_ds),
-		.fifo_wrreq_pcie_ds				(fifo_wrreq_pcie_ds),
-		.fifo_data_pcie_ds				(fifo_data_pcie_ds),
+		.fifo_wrreq_pcie_ds			(fifo_wrreq_pcie_ds),
+		.fifo_data_pcie_ds			(fifo_data_pcie_ds),
+		.fifo_prog_full_pcie_ds		(fifo_prog_full_pcie_ds),
 		
 		// B0 Arb
 		.b0_cpld_rq						(b0_cpld_rq),
@@ -516,7 +517,7 @@ tx_trn_fsm
 		.fifo_rdreq_pcie_us			(fifo_rdreq_pcie_us),
 		.fifo_q_pcie_us				(fifo_q_pcie_us),
 		.fifo_empty_pcie_us			(fifo_empty_pcie_us),
-		.fifo_prog_full_pcie_ds	(fifo_prog_full_pcie_ds),
+		.fifo_prog_full_pcie_ds	(1'b0),
 		// B0 Arb
 		.b0_cpld_rq					(b0_cpld_rq),
 		.b0_cpld_ack				(b0_cpld_ack),
