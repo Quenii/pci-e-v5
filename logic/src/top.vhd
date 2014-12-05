@@ -6,7 +6,7 @@
 -- Author     :   <Administrator@GUOYONGDONG>
 -- Company    : 
 -- Created    : 2012-08-10
--- Last update: 2014-12-03
+-- Last update: 2014-12-05
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -214,8 +214,8 @@ begin  -- archi
     CLKIN1_IN    => clk33m_i,
     RST_IN       => not rst_n_i,
     CLKFBOUT_OUT => open,
-    CLKOUT0_OUT  => open,
-    CLKOUT1_OUT  => cdc_fifo_wr_clk,
+    CLKOUT0_OUT  => cdc_fifo_wr_clk,
+    CLKOUT1_OUT  => open,
     CLKOUT2_OUT  => open,
     CLKOUT3_OUT  => ofifo_rdclk,
     LOCKED_OUT   => open
@@ -334,7 +334,7 @@ begin  -- archi
   ddr2_fifo_rd_en <= (not ddr2_fifo_empty) and (not cdc_fifo_full);
   cdc_fifo_wr_en  <= not cdc_fifo_full;
 --  cdc_fifo_wr_data <= ddr2_fifo_rd_data;
-  process (cdc_fifo_wr_clk, cdc_fifo_rst)
+  process (cdc_fifo_rst, cdc_fifo_wr_clk)
   begin
     if (cdc_fifo_rst = '1') then
       cdc_fifo_wr_data <= (others => '0');
@@ -345,7 +345,7 @@ begin  -- archi
     end if;
   end process;
 
-  fifo_inst2 : fifo_fwft_64x64
+  cdc_fifo : fifo_fwft_64x64
     port map (
       rst    => cdc_fifo_rst,
       wr_clk => cdc_fifo_wr_clk,
@@ -362,8 +362,6 @@ begin  -- archi
   cdc_fifo_rd_en      <= (not cdc_fifo_empty) and (not pcie_usfifo_prog_full);
   pcie_usfifo_wr_en   <= cdc_fifo_rd_en;
   pcie_usfifo_wr_data <= cdc_fifo_rd_data;
-
-
 
 
   pcie_rst_n <= not sys_rst;
