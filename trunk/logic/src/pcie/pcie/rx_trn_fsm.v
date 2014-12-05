@@ -102,10 +102,8 @@ module rx_trn_fsm
 		// FIFO Interface for PCI Express Downstream
 		input		[tags-1:0]		fifo_ack_pcie_ds,
 		output		[tags-1:0]		fifo_rdy_pcie_ds,		//coresponding to tags in tx module
-
 		output		[tags-1:0]		fifo_wrreq_pcie_ds,				// fifo write request
 		output		[63:0]	fifo_data_pcie_ds,				// fifo write data
-		input				fifo_prog_full_pcie_ds,
 		
 		// B0 Arb
 		output					b0_cpld_rq,						//
@@ -417,7 +415,7 @@ begin
 					else if ((!trn_rsof_n) && (!trn_rsrc_rdy_n) && (!trn_rdst_rdy_n))
 					begin
 						//CplD, thus downstream DMA
-						if ((trn_rd[62:56] == `CplD_FMT_TYPE) && (trn_rd[15:13] == 3'b000) && trn_rerrfwd_n && dma_rs  && !fifo_prog_full_pcie_ds)
+						if ((trn_rd[62:56] == `CplD_FMT_TYPE) && (trn_rd[15:13] == 3'b000) && trn_rerrfwd_n && dma_rs)
 						begin
 							ep_rx_state <= #tDLY ep_rx_s8;
 							
@@ -697,7 +695,7 @@ begin
 				begin
 					ep_rx_state <= #tDLY ep_rx_s9;
 					
-					index <= #tDLY trn_rd[43:40];
+					index <= #tDLY trn_rd[42:40];
 					cpld_dl <= #tDLY {trn_rd[7:0], trn_rd[15:8], trn_rd[23:16], trn_rd[31:24]};
 				end
 				
@@ -857,14 +855,6 @@ begin
 			fifo_rdy_r[5] <= #tDLY (fifo_ack_pcie_ds[5] == 1'b1) ? 1'b0 : fifo_rdy_r[5];
 			fifo_rdy_r[6] <= #tDLY (fifo_ack_pcie_ds[6] == 1'b1) ? 1'b0 : fifo_rdy_r[6];
 			fifo_rdy_r[7] <= #tDLY (fifo_ack_pcie_ds[7] == 1'b1) ? 1'b0 : fifo_rdy_r[7];
-			fifo_rdy_r[8] <= #tDLY (fifo_ack_pcie_ds[8] == 1'b1) ? 1'b0 : fifo_rdy_r[8];
-			fifo_rdy_r[9] <= #tDLY (fifo_ack_pcie_ds[9] == 1'b1) ? 1'b0 : fifo_rdy_r[9];
-			fifo_rdy_r[10] <= #tDLY (fifo_ack_pcie_ds[10] == 1'b1) ? 1'b0 : fifo_rdy_r[10];
-			fifo_rdy_r[11] <= #tDLY (fifo_ack_pcie_ds[11] == 1'b1) ? 1'b0 : fifo_rdy_r[11];
-			fifo_rdy_r[12] <= #tDLY (fifo_ack_pcie_ds[12] == 1'b1) ? 1'b0 : fifo_rdy_r[12];
-			fifo_rdy_r[13] <= #tDLY (fifo_ack_pcie_ds[13] == 1'b1) ? 1'b0 : fifo_rdy_r[13];
-			fifo_rdy_r[14] <= #tDLY (fifo_ack_pcie_ds[14] == 1'b1) ? 1'b0 : fifo_rdy_r[14];
-			fifo_rdy_r[15] <= #tDLY (fifo_ack_pcie_ds[15] == 1'b1) ? 1'b0 : fifo_rdy_r[15];
 		end	
 	end
 end
