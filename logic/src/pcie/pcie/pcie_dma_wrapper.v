@@ -25,7 +25,7 @@
 
 module pcie_dma_wrapper 
 	# (
-		parameter 	tags		= 16,
+		parameter 	tags		= 8,
 		parameter	tDLY		= 0									// Simulation delay
 	)
 	
@@ -304,9 +304,8 @@ rx_trn_fsm
 		// FIFO Interface for PCI Express Downstream
 		.fifo_ack_pcie_ds				(fifo_ack_pcie_ds),
 		.fifo_rdy_pcie_ds				(fifo_rdy_pcie_ds),
-		.fifo_wrreq_pcie_ds			(fifo_wrreq_pcie_ds),
-		.fifo_data_pcie_ds			(fifo_data_pcie_ds),
-		.fifo_prog_full_pcie_ds		(fifo_prog_full_pcie_ds),
+		.fifo_wrreq_pcie_ds				(fifo_wrreq_pcie_ds),
+		.fifo_data_pcie_ds				(fifo_data_pcie_ds),
 		
 		// B0 Arb
 		.b0_cpld_rq						(b0_cpld_rq),
@@ -321,7 +320,7 @@ rx_trn_fsm
 // PCI Express Downstream Buffer
 pcie_ds_buf 
 	# (
-		.tags					(tags)
+		.tags					(8)
 	)
 	
 	pcie_ds_buf_inst
@@ -473,7 +472,6 @@ nonposted_pkt_slicer
 // Transmit TRN FSM
 tx_trn_fsm 
 	# (
-		.tags						(tags),
 		.tDLY						(tDLY)
 	)
 	
@@ -518,7 +516,7 @@ tx_trn_fsm
 		.fifo_rdreq_pcie_us			(fifo_rdreq_pcie_us),
 		.fifo_q_pcie_us				(fifo_q_pcie_us),
 		.fifo_empty_pcie_us			(fifo_empty_pcie_us),
-		.fifo_prog_full_pcie_ds	(1'b0),
+		.fifo_prog_full_pcie_ds	(fifo_prog_full_pcie_ds),
 		// B0 Arb
 		.b0_cpld_rq					(b0_cpld_rq),
 		.b0_cpld_ack				(b0_cpld_ack),

@@ -5,5 +5,5 @@ SET devicefamily = virtex5
 SET flowvendor = Foundation_ISE
 SET package = ff1136
 SET speedgrade = -1
-SET verilogsim = false
-SET vhdlsim = true
+SET verilogsim = True
+SET vhdlsim = True
