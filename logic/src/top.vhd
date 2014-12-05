@@ -6,7 +6,7 @@
 -- Author     :   <Administrator@GUOYONGDONG>
 -- Company    : 
 -- Created    : 2012-08-10
--- Last update: 2014-12-05
+-- Last update: 2012-09-24
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -26,10 +26,10 @@ use ieee.std_logic_unsigned.all;
 
 entity top is
   port (
-    clk33m_i      : in  std_logic;
-    fpga_refclk_p : in  std_logic;      -- 100MHz
-    fpga_refclk_n : in  std_logic;
-    rst_n_i       : in  std_logic;
+    clk33m_i        : in    std_logic;
+    fpga_refclk_p   : in    std_logic;  -- 100MHz
+    fpga_refclk_n   : in    std_logic;
+    rst_n_i         : in    std_logic;
     -- TVP5158 Interface
 --    cvbs_clk_i      : in    std_logic;
 --    cvbs_dvo_a_i    : in    std_logic_vector(7 downto 0);
@@ -50,12 +50,12 @@ entity top is
 --    emif_oe_n       : in    std_logic;
 --    emif_wait0      : in    std_logic;
     -- PCI Express Interface
-    PCIE_REFCLKP  : in  std_logic;  -- Reference Clock (differential pair) for PCI Express
-    PCIE_REFCLKN  : in  std_logic;  -- Reference Clock (differential pair) for PCI Express
-    pci_exp_txp   : out std_logic_vector(3 downto 0);  -- Transmitter differential pair, Lane 0/1/2/3
-    pci_exp_txn   : out std_logic_vector(3 downto 0);  -- Transmitter differential pair, Lane 0/1/2/3
-    pci_exp_rxp   : in  std_logic_vector(3 downto 0);  -- Receiver differential pair, Lane 0/1/2/3
-    pci_exp_rxn   : in  std_logic_vector(3 downto 0);  -- Receiver differential pair, Lane 0/1/2/3
+    PCIE_REFCLKP    : in    std_logic;  -- Reference Clock (differential pair) for PCI Express
+    PCIE_REFCLKN    : in    std_logic;  -- Reference Clock (differential pair) for PCI Express
+    pci_exp_txp     : out   std_logic_vector(3 downto 0);  -- Transmitter differential pair, Lane 0/1/2/3
+    pci_exp_txn     : out   std_logic_vector(3 downto 0);  -- Transmitter differential pair, Lane 0/1/2/3
+    pci_exp_rxp     : in    std_logic_vector(3 downto 0);  -- Receiver differential pair, Lane 0/1/2/3
+    pci_exp_rxn     : in    std_logic_vector(3 downto 0);  -- Receiver differential pair, Lane 0/1/2/3
     -- ddr2 sdram interface
 --    ddr2_dq         : inout std_logic_vector(31 downto 0);
 --    ddr2_a          : out   std_logic_vector(13 downto 0);
@@ -72,8 +72,8 @@ entity top is
 --    ddr2_ck         : out   std_logic_vector(0 downto 0);
 --    ddr2_ck_n       : out   std_logic_vector(0 downto 0);
     -- LED Interface
-    test_o        : out std_logic_vector(63 downto 0);
-    led_n_o       : out std_logic_vector(5 downto 1)
+	 test_o :out std_logic_vector(63 downto 0);
+    led_n_o         : out   std_logic_vector(5 downto 1)
     );
 end top;
 
@@ -103,24 +103,23 @@ architecture archi of top is
       full   : out std_logic;
       empty  : out std_logic);
   end component;
-  component clk_40m
-    port(
-      CLKIN1_IN    : in  std_logic;
-      RST_IN       : in  std_logic;
-      CLKFBOUT_OUT : out std_logic;
-      CLKOUT0_OUT  : out std_logic;
-      CLKOUT1_OUT  : out std_logic;
-      CLKOUT2_OUT  : out std_logic;
-      CLKOUT3_OUT  : out std_logic;
-      LOCKED_OUT   : out std_logic
-      );
-  end component;
+	COMPONENT clk_40m
+	PORT(
+		CLKIN1_IN : IN std_logic;
+		RST_IN : IN std_logic;          
+		CLKFBOUT_OUT : OUT std_logic;
+		CLKOUT0_OUT : OUT std_logic;
+		CLKOUT1_OUT : OUT std_logic;
+		CLKOUT2_OUT : OUT std_logic;
+		CLKOUT3_OUT : OUT std_logic;
+		LOCKED_OUT : OUT std_logic
+		);
+	END COMPONENT;
 
-  signal sys_clk     : std_logic;
-  signal clk_200m    : std_logic;
-  signal i2c_clk     : std_logic;
-  signal sys_rst     : std_logic;
-  signal pcie_refclk : std_logic;
+  signal sys_clk  : std_logic;
+  signal clk_200m : std_logic;
+  signal i2c_clk  : std_logic;
+  signal sys_rst  : std_logic;
 
   signal fifo1_rst : std_logic;
   signal wr_clk    : std_logic;
@@ -183,44 +182,41 @@ architecture archi of top is
   constant ddr2_rst_cnt_max_div2 : integer := ddr2_rst_cnt_max / 2;
   signal   ddr2_rst_cnt          : integer range 0 to ddr2_rst_cnt_max;
 
-  constant test_cnt_max       : integer := 101;
-  signal   test_cnt           : integer range 0 to test_cnt_max;
-  signal   fifo_empty_pcie_ds : std_logic;
-  signal   fifo_q_pcie_ds     : std_logic_vector(63 downto 0);
-  signal   ofifo_full         : std_logic;
-  signal   ofifo_empty        : std_logic;
-  signal   ofifo_wr_en        : std_logic;
-  signal   ofifo_rdclk        : std_logic;
+  constant test_cnt_max : integer := 101;
+  signal   test_cnt     : integer range 0 to test_cnt_max;
+  signal fifo_empty_pcie_ds :  std_logic;
+	signal fifo_q_pcie_ds : std_logic_vector(63 downto 0);
+  signal ofifo_full    : std_logic;
+  signal ofifo_empty   : std_logic;
+  signal ofifo_wr_en : std_logic;
+   signal  ofifo_rdclk : std_logic;
 begin  -- archi
 
-  led_n_o(5) <= sys_rst;
-
+  led_n_o(5)          <= sys_rst;
+  
   clk_rst_inst : entity work.clk_rst_pro
     port map (
-      rst_i         => not rst_n_i,
-      clk33m_i      => clk33m_i,
-      PCIE_REFCLKP  => PCIE_REFCLKP,
-      PCIE_REFCLKN  => PCIE_REFCLKN,
-      clk_p_i       => fpga_refclk_p,
-      clk_n_i       => fpga_refclk_n,
-      sys_clk_o     => sys_clk,         -- 40MHz
-      clk_200m_o    => clk_200m,        -- 200MHz
-      i2c_clk_o     => i2c_clk,         -- 1MHz
-      PCIE_REFCLK_o => PCIE_REFCLK,
-      sys_rst_o     => sys_rst
+      rst_i      => not rst_n_i,
+      clk33m_i   => clk33m_i,
+      clk_p_i    => fpga_refclk_p,
+      clk_n_i    => fpga_refclk_n,
+      sys_clk_o  => sys_clk,            -- 40MHz
+      clk_200m_o => clk_200m,           -- 200MHz
+      i2c_clk_o  => i2c_clk,            -- 1MHz
+      sys_rst_o  => sys_rst
       );
 
-  Inst_clk_40m : clk_40m port map(
-    CLKIN1_IN    => clk33m_i,
-    RST_IN       => not rst_n_i,
-    CLKFBOUT_OUT => open,
-    CLKOUT0_OUT  => cdc_fifo_wr_clk,
-    CLKOUT1_OUT  => open,
-    CLKOUT2_OUT  => open,
-    CLKOUT3_OUT  => ofifo_rdclk,
-    LOCKED_OUT   => open
-    );
-  -----------------------------------------------------------------------------
+	Inst_clk_40m: clk_40m PORT MAP(
+		CLKIN1_IN => clk33m_i,
+		RST_IN => not rst_n_i,
+		CLKFBOUT_OUT => open,
+		CLKOUT0_OUT => open,
+		CLKOUT1_OUT => cdc_fifo_wr_clk,
+		CLKOUT2_OUT => open,
+		CLKOUT3_OUT => ofifo_rdclk,
+		LOCKED_OUT => open 
+	);
+ -----------------------------------------------------------------------------
   -----------------------------------------------------------------------------
 
   fifo1_rst <= sys_rst or (not ddr2_rdy);
@@ -329,23 +325,23 @@ begin  -- archi
 
 
 
-  cdc_fifo_rst    <= sys_rst;
+  cdc_fifo_rst     <= sys_rst;
 --  cdc_fifo_wr_clk  <= clk33m_i; -- ddr2_fifo_clk;
-  ddr2_fifo_rd_en <= (not ddr2_fifo_empty) and (not cdc_fifo_full);
-  cdc_fifo_wr_en  <= not cdc_fifo_full;
+  ddr2_fifo_rd_en  <= (not ddr2_fifo_empty) and (not cdc_fifo_full);
+  cdc_fifo_wr_en   <= not cdc_fifo_full;
 --  cdc_fifo_wr_data <= ddr2_fifo_rd_data;
-  process (cdc_fifo_rst, cdc_fifo_wr_clk)
+  process (cdc_fifo_wr_clk, cdc_fifo_rst)
   begin
     if (cdc_fifo_rst = '1') then
       cdc_fifo_wr_data <= (others => '0');
     elsif (rising_edge(cdc_fifo_wr_clk)) then
-      if cdc_fifo_wr_en = '1' then
-        cdc_fifo_wr_data <= cdc_fifo_wr_data + '1';
-      end if;
+		if cdc_fifo_wr_en = '1' then
+			cdc_fifo_wr_data <= cdc_fifo_wr_data + '1';
+		end if;
     end if;
   end process;
 
-  cdc_fifo : fifo_fwft_64x64
+  fifo_inst2 : fifo_fwft_64x64
     port map (
       rst    => cdc_fifo_rst,
       wr_clk => cdc_fifo_wr_clk,
@@ -364,31 +360,32 @@ begin  -- archi
   pcie_usfifo_wr_data <= cdc_fifo_rd_data;
 
 
+
+
   pcie_rst_n <= not sys_rst;
 
   pcie_dma_top_inst : entity work.pcie_dma_top
     port map(
---      PCIE_REFCLKP           => PCIE_REFCLKP,
---      PCIE_REFCLKN           => PCIE_REFCLKN,
-      PCIE_REFCLK            => PCIE_REFCLK,
+      PCIE_REFCLKP           => PCIE_REFCLKP,
+      PCIE_REFCLKN           => PCIE_REFCLKN,
       pci_exp_txp            => pci_exp_txp,
       pci_exp_txn            => pci_exp_txn,
       pci_exp_rxp            => pci_exp_rxp,
       pci_exp_rxn            => pci_exp_rxn,
       PERSTN                 => pcie_rst_n,
-      USER_LED               => led_n_o(3 downto 1),
+      USER_LED              => led_n_o(3 downto 1),
       pcie_trn_clk           => pcie_trn_clk,
       fifo_wrreq_pcie_us     => pcie_usfifo_wr_en,
       fifo_data_pcie_us      => pcie_usfifo_wr_data,
       fifo_prog_full_pcie_us => pcie_usfifo_prog_full,
-      fifo_overflow_pcie_ds  => led_n_o(4),
+		fifo_overflow_pcie_ds  => led_n_o(4),
       fifo_rdreq_pcie_ds     => ofifo_wr_en,
       fifo_q_pcie_ds         => fifo_q_pcie_ds,
       fifo_empty_pcie_ds     => fifo_empty_pcie_ds,
       record_en              => open
       );
-
-  ofifo_wr_en <= (not fifo_empty_pcie_ds) and (not ofifo_full);
+		
+	ofifo_wr_en <= (not fifo_empty_pcie_ds) and (not ofifo_full);
   ofifo : fifo_fwft_64x64
     port map (
       rst    => cdc_fifo_rst,

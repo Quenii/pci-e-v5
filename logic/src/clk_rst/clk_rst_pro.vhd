@@ -6,7 +6,7 @@
 -- Author     :   <Administrator@GUOYONGDONG>
 -- Company    : 
 -- Created    : 2012-05-31
--- Last update: 2014-12-03
+-- Last update: 2012-08-21
 -- Platform   : 
 -- Standard   : VHDL'87
 -------------------------------------------------------------------------------
@@ -28,17 +28,14 @@ use UNISIM.Vcomponents.all;
 
 entity clk_rst_pro is
   port(
-    rst_i         : in  std_logic;
-    PCIE_REFCLKP  : in  std_logic;
-    PCIE_REFCLKN  : in  std_logic;
-    clk33m_i      : in  std_logic;      -- 33MHz
-    clk_p_i       : in  std_logic;      -- 100MHz
-    clk_n_i       : in  std_logic;
-    sys_clk_o     : out std_logic;      -- 40MHz
-    clk_200m_o    : out std_logic;      -- 200MHz
-    i2c_clk_o     : out std_logic;      -- 1MHz
-    pcie_refclk_o : out std_logic;
-    sys_rst_o     : out std_logic
+    rst_i      : in  std_logic;
+    clk33m_i   : in  std_logic;         -- 33MHz
+    clk_p_i    : in  std_logic;         -- 100MHz
+    clk_n_i    : in  std_logic;
+    sys_clk_o  : out std_logic;         -- 40MHz
+    clk_200m_o : out std_logic;         -- 200MHz
+    i2c_clk_o  : out std_logic;         -- 1MHz
+    sys_rst_o  : out std_logic
     );
 end clk_rst_pro;
 
@@ -79,14 +76,8 @@ begin  -- archi
   clk_200m_o <= clk_200m;
   i2c_clk_o  <= i2c_clk;
   sys_rst_o  <= sys_rst;
-  sys_rst    <= rst_i;                  -- or lock_rst;
+  sys_rst    <= rst_i;-- or lock_rst;
 
-  pcie_refclk_ibuf : IBUFDS
-    port map (
-      o  => pcie_refclk_o,
-      i  => PCIE_REFCLKP,
-      ib => PCIE_REFCLKN
-      );
 
   IBUFGDS_inst : IBUFGDS
     generic map (
