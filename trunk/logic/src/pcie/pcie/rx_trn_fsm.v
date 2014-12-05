@@ -102,8 +102,10 @@ module rx_trn_fsm
 		// FIFO Interface for PCI Express Downstream
 		input		[tags-1:0]		fifo_ack_pcie_ds,
 		output		[tags-1:0]		fifo_rdy_pcie_ds,		//coresponding to tags in tx module
+
 		output		[tags-1:0]		fifo_wrreq_pcie_ds,				// fifo write request
 		output		[63:0]	fifo_data_pcie_ds,				// fifo write data
+		input				fifo_prog_full_pcie_ds,
 		
 		// B0 Arb
 		output					b0_cpld_rq,						//
@@ -415,7 +417,7 @@ begin
 					else if ((!trn_rsof_n) && (!trn_rsrc_rdy_n) && (!trn_rdst_rdy_n))
 					begin
 						//CplD, thus downstream DMA
-						if ((trn_rd[62:56] == `CplD_FMT_TYPE) && (trn_rd[15:13] == 3'b000) && trn_rerrfwd_n && dma_rs)
+						if ((trn_rd[62:56] == `CplD_FMT_TYPE) && (trn_rd[15:13] == 3'b000) && trn_rerrfwd_n && dma_rs  && !fifo_prog_full_pcie_ds)
 						begin
 							ep_rx_state <= #tDLY ep_rx_s8;
 							
