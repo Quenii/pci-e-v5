@@ -320,7 +320,7 @@ rx_trn_fsm
 // PCI Express Downstream Buffer
 pcie_ds_buf 
 	# (
-		.tags					(tags)
+		.tags					(8)
 	)
 	
 	pcie_ds_buf_inst

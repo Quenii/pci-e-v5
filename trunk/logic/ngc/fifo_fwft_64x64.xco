@@ -1,7 +1,7 @@
 ##############################################################
 #
-# Xilinx Core Generator version 14.7
-# Date: Fri Dec 05 12:29:44 2014
+# Xilinx Core Generator version 11.4
+# Date: Tue Aug 21 07:07:15 2012
 #
 ##############################################################
 #
@@ -12,28 +12,24 @@
 #
 ##############################################################
 #
-#  Generated from component: xilinx.com:ip:fifo_generator:5.3
-#
-##############################################################
-#
 # BEGIN Project Options
-SET addpads = false
-SET asysymbol = true
+SET addpads = False
+SET asysymbol = True
 SET busformat = BusFormatAngleBracketNotRipped
-SET createndf = false
+SET createndf = False
 SET designentry = VHDL
-SET device = xc5vlx110t
+SET device = xc5vlx50t
 SET devicefamily = virtex5
 SET flowvendor = Foundation_ISE
-SET formalverification = false
-SET foundationsym = false
+SET formalverification = False
+SET foundationsym = False
 SET implementationfiletype = Ngc
 SET package = ff1136
-SET removerpms = false
+SET removerpms = False
 SET simulationfiles = Behavioral
 SET speedgrade = -1
-SET verilogsim = false
-SET vhdlsim = true
+SET verilogsim = True
+SET vhdlsim = True
 # END Project Options
 # BEGIN Select
 SELECT Fifo_Generator family Xilinx,_Inc. 5.3
@@ -84,8 +80,5 @@ CSET write_clock_frequency=1
 CSET write_data_count=false
 CSET write_data_count_width=6
 # END Parameters
-# BEGIN Extra information
-MISC pkg_timestamp=2013-10-13T18:46:09Z
-# END Extra information
 GENERATE
-# CRC: 2127dc71
+# CRC: 77f248d3
