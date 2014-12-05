@@ -38,6 +38,7 @@
 
 module tx_trn_fsm 
 	# (
+		parameter	tags_width = 3,  // log2 of tags
 		parameter	tDLY		= 0							// Simulation delay
 	)
 	
@@ -1143,7 +1144,7 @@ begin
 		end
 		else
 		begin
-			npsttlp_tg <= #tDLY {5'b00000, tx_npsttlp_cnt[2:0]}; //loops in 0~7
+			npsttlp_tg <= #tDLY { {8-tags_width {1'b0}}, tx_npsttlp_cnt[tags_width-1:0]}; //loops in 0~7
 		end
 	end
 end
