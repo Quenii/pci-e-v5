@@ -22,7 +22,6 @@
 ///////////////////////////////////////////////////////////////////////////////
 `timescale 1ns / 100ps
 
-
 /************** TLP Header Type and Format Field Encodings **************/
 `define	IORd_FMT_TYPE		7'b00_00010
 `define IOWr_FMT_TYPE  		7'b10_00010
@@ -34,10 +33,9 @@
 `define CplD_FMT_TYPE 		7'b10_01010
 /************** TLP Header Type and Format Field Encodings **************/
 
-
-
 module tx_trn_fsm 
 	# (
+		parameter 	tags		= 8,
 		parameter	tDLY		= 0							// Simulation delay
 	)
 	
@@ -1143,7 +1141,8 @@ begin
 		end
 		else
 		begin
-			npsttlp_tg <= #tDLY {5'b00000, tx_npsttlp_cnt[2:0]}; //loops in 0~7
+			npsttlp_tg <= #tDLY {{ 8-4 {1'b0} }, tx_npsttlp_cnt[3:0]}; //loops in 0~7
+			//npsttlp_tg <= #tDLY {{ 8-clog2(tags) {1'b0} }, tx_npsttlp_cnt[clog2(tags)-1:0]}; //loops in 0~7;
 		end
 	end
 end
@@ -1267,6 +1266,14 @@ always@(b1_r32_be, b1_r32_a[6:2]) begin
 end
 
 
+function integer clog2;
+	input [31:0] value;
+	integer i;
+	begin
+		for (clog2=0; i>0; clog2=clog2+1)
+			i = i>>1;
+	end		
+endfunction
 
 
 

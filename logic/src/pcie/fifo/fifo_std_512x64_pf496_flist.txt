@@ -8,7 +8,6 @@ fifo_std_512x64_pf496.sym
 fifo_std_512x64_pf496.vhd
 fifo_std_512x64_pf496.vho
 fifo_std_512x64_pf496.xco
-fifo_std_512x64_pf496.xise
 fifo_std_512x64_pf496_flist.txt
 fifo_std_512x64_pf496_readme.txt
 fifo_std_512x64_pf496_xmdf.tcl

@@ -25,7 +25,7 @@
 
 module pcie_dma_wrapper 
 	# (
-		parameter 	tags		= 8,
+		parameter 	tags		= 16,
 		parameter	tDLY		= 0									// Simulation delay
 	)
 	
@@ -321,7 +321,7 @@ rx_trn_fsm
 // PCI Express Downstream Buffer
 pcie_ds_buf 
 	# (
-		.tags					(8)
+		.tags					(tags)
 	)
 	
 	pcie_ds_buf_inst
@@ -473,6 +473,7 @@ nonposted_pkt_slicer
 // Transmit TRN FSM
 tx_trn_fsm 
 	# (
+		.tags						(tags),
 		.tDLY						(tDLY)
 	)
 	
