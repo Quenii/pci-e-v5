@@ -697,7 +697,7 @@ begin
 				begin
 					ep_rx_state <= #tDLY ep_rx_s9;
 					
-					index <= #tDLY trn_rd[42:40];
+					index <= #tDLY trn_rd[43:40];
 					cpld_dl <= #tDLY {trn_rd[7:0], trn_rd[15:8], trn_rd[23:16], trn_rd[31:24]};
 				end
 				
@@ -857,6 +857,14 @@ begin
 			fifo_rdy_r[5] <= #tDLY (fifo_ack_pcie_ds[5] == 1'b1) ? 1'b0 : fifo_rdy_r[5];
 			fifo_rdy_r[6] <= #tDLY (fifo_ack_pcie_ds[6] == 1'b1) ? 1'b0 : fifo_rdy_r[6];
 			fifo_rdy_r[7] <= #tDLY (fifo_ack_pcie_ds[7] == 1'b1) ? 1'b0 : fifo_rdy_r[7];
+			fifo_rdy_r[8] <= #tDLY (fifo_ack_pcie_ds[8] == 1'b1) ? 1'b0 : fifo_rdy_r[8];
+			fifo_rdy_r[9] <= #tDLY (fifo_ack_pcie_ds[9] == 1'b1) ? 1'b0 : fifo_rdy_r[9];
+			fifo_rdy_r[10] <= #tDLY (fifo_ack_pcie_ds[10] == 1'b1) ? 1'b0 : fifo_rdy_r[10];
+			fifo_rdy_r[11] <= #tDLY (fifo_ack_pcie_ds[11] == 1'b1) ? 1'b0 : fifo_rdy_r[11];
+			fifo_rdy_r[12] <= #tDLY (fifo_ack_pcie_ds[12] == 1'b1) ? 1'b0 : fifo_rdy_r[12];
+			fifo_rdy_r[13] <= #tDLY (fifo_ack_pcie_ds[13] == 1'b1) ? 1'b0 : fifo_rdy_r[13];
+			fifo_rdy_r[14] <= #tDLY (fifo_ack_pcie_ds[14] == 1'b1) ? 1'b0 : fifo_rdy_r[14];
+			fifo_rdy_r[15] <= #tDLY (fifo_ack_pcie_ds[15] == 1'b1) ? 1'b0 : fifo_rdy_r[15];
 		end	
 	end
 end
